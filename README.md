@@ -8,6 +8,7 @@ Egy nyilvántartó rendszer készítése tetszőleges témakörben (pl. terméke
 
 Vagy a gyakorlaton tanult technológiák közül szabadon választva.
 
+## Angular
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.1.
 
