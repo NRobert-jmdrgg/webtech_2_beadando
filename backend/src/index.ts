@@ -1,19 +1,15 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import { connect } from 'mongoose';
 
 dotenv.config();
-
-const app: Express = express();
 const port = process.env.PORT;
+
+export const app: Express = express();
 
 connect(process.env.MONGO_URI!)
   .then(() => {
     console.log('mongodb connected...');
-
-    app.get('/', async (req: Request, res: Response) => {
-      res.status(200).send('started');
-    });
 
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
