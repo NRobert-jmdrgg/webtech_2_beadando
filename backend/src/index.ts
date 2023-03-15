@@ -1,7 +1,6 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { connect } from 'mongoose';
-import { Schema } from 'inspector';
 
 dotenv.config();
 
@@ -13,7 +12,7 @@ connect(process.env.MONGO_URI!)
     console.log('mongodb connected...');
 
     app.get('/', async (req: Request, res: Response) => {
-      res.status(200).send('');
+      res.status(200).send('started');
     });
 
     app.listen(port, () => {
