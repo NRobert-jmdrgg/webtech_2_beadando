@@ -1,13 +1,22 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import { MongoClient } from 'mongodb';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Express + TypeScript Server');
+const mongo_client = new MongoClient(process.env.MONGO_URI!);
+mongo_client
+  .connect()
+  .then(() => {
+    console.log('mongodb connected...');
+  })
+  .catch((error) => console.error(error));
+
+app.get('/', async (req: Request, res: Response) => {
+  res.status(200).send('');
 });
 
 app.listen(port, () => {
