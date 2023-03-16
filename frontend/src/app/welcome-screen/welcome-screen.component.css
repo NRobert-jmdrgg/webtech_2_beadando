@@ -1,0 +1,10 @@
+.screen-centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.welcome-description {
+  margin: 20px;
+}

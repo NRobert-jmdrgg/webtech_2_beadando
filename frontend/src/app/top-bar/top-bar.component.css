@@ -1,0 +1,13 @@
+.top-bar-spacer {
+  flex: 1 1 auto;
+}
+
+.top-bar-button-row {
+  display: table-cell;
+  max-width: 600px;
+  margin: 8px 8px 8px 0;
+}
+
+.top-bar-button-row button {
+  margin: 0 8px;
+}
