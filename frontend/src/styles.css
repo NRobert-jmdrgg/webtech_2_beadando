@@ -8,3 +8,17 @@ body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+.card-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.card-full-width {
+  width: 100%;
+}
+
+.card-form-container {
+  margin: 16px 0;
+}

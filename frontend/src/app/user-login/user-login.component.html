@@ -1,11 +1,12 @@
 <app-centered-card>
   <mat-card-header>Bejelentkezés</mat-card-header>
-  <mat-card-content class="user-login-form-container">
-    <form class="user-login-form">
-      <mat-form-field class="user-login-full-width">
+  <mat-card-content class="card-form-container">
+    <form class="card-form">
+      <mat-form-field class="card-full-width">
         <mat-label>Email</mat-label>
         <input
           type="email"
+          name="email"
           [(ngModel)]="loginData.email"
           matInput
           [formControl]="emailFormControl"
@@ -25,15 +26,25 @@
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="user-login-full-width">
+      <mat-form-field class="card-full-width">
         <mat-label>Jelszó</mat-label>
         <input
-          type="password"
+          [type]="hide ? 'password' : 'text'"
+          name="password"
           [(ngModel)]="loginData.password"
           matInput
           [formControl]="passwordFormControl"
           [errorStateMatcher]="matcher"
         />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
         <mat-error *ngIf="!passwordFormControl.hasError('required')">
           Kérem adja meg a jelszavát
         </mat-error>
@@ -60,7 +71,8 @@
 
   <mat-card-footer>
     <p style="font-size: 10px; margin-left: 40px">
-      Nem rendelkezik fiókkal? A regisztrációhoz kattintson <a>ide</a>!
+      Nem rendelkezik fiókkal? A regisztrációhoz
+      <a routerLink="/register" routerLinkActive="active">kattintson ide</a>!
     </p>
   </mat-card-footer>
 </app-centered-card>

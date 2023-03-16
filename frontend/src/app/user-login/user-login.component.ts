@@ -24,7 +24,7 @@ export class LoginErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-user-login',
   templateUrl: './user-login.component.html',
-  styleUrls: ['./user-login.component.css'],
+  styleUrls: [],
 })
 export class UserLoginComponent {
   emailFormControl = new FormControl('', [
@@ -35,6 +35,8 @@ export class UserLoginComponent {
   passwordFormControl = new FormControl('', [Validators.required]);
 
   matcher = new LoginErrorStateMatcher();
+
+  hide = true;
 
   loginData = {
     email: '',

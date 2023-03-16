@@ -22,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CenteredCardComponent } from './centered-card/centered-card.component';
+import { MatIconModule } from '@angular/material/icon';
 
 const routes: Routes = [
   { path: '', component: WelcomeScreenComponent },
@@ -57,6 +58,7 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatCheckboxModule,
+    MatIconModule,
   ],
   exports: [RouterModule],
   providers: [],

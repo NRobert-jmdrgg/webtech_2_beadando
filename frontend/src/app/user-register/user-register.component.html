@@ -1,1 +1,121 @@
-<app-centered-card> </app-centered-card>
+<app-centered-card>
+  <mat-card-header>Regisztráció</mat-card-header>
+  <mat-card-content class="card-form-container">
+    <form class="card-form">
+      <mat-form-field class="card-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="userRegisterData.email"
+          matInput
+          [formControl]="emailFormControl"
+          [errorStateMatcher]="matcher"
+          placeholder="Ex. pat@example.com"
+        />
+        <mat-error
+          *ngIf="
+            emailFormControl.hasError('email') &&
+            !emailFormControl.hasError('required')
+          "
+        >
+          Kérem adja meg az email címét
+        </mat-error>
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          Az email megadásas <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Jelszó</mat-label>
+        <input
+          [type]="hide ? 'password' : 'text'"
+          name="password"
+          [(ngModel)]="userRegisterData.password"
+          matInput
+          [formControl]="passwordFormControl"
+          [errorStateMatcher]="matcher"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="!passwordFormControl.hasError('required')">
+          Kérem adja meg a jelszavát
+        </mat-error>
+        <mat-error *ngIf="passwordFormControl.hasError('required')">
+          A jelszó megadása <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Telefonszám</mat-label>
+        <input
+          type="text"
+          style="margin: 0 auto"
+          name="phone"
+          [(ngModel)]="userRegisterData.phone"
+          matInput
+        />
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Vezetéknév</mat-label>
+        <input
+          type="text"
+          name="lastname"
+          [(ngModel)]="userRegisterData.lastName"
+          matInput
+        />
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Keresztnév</mat-label>
+        <input
+          type="text"
+          name="firstname"
+          style="margin: 0 auto"
+          [(ngModel)]="userRegisterData.firstName"
+          matInput
+        />
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Felhasználónév</mat-label>
+        <input
+          type="text"
+          name="name"
+          style="margin: 0 auto"
+          [(ngModel)]="userRegisterData.name"
+          matInput
+          [formControl]="userNameFormControl"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="!userNameFormControl.hasError('required')">
+          Kérem adja meg a felhasználónevét!
+        </mat-error>
+        <mat-error *ngIf="userNameFormControl.hasError('required')">
+          A felhasználónév megadása <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <div style="display: flex">
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          style="text-align: center; margin: 0 auto"
+          [disabled]="
+            emailFormControl.invalid ||
+            passwordFormControl.invalid ||
+            userNameFormControl.invalid
+          "
+        >
+          Regisztrál
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</app-centered-card>
