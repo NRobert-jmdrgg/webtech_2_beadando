@@ -20,10 +20,13 @@ import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.componen
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CenteredCardComponent } from './centered-card/centered-card.component';
 
 const routes: Routes = [
   { path: '', component: WelcomeScreenComponent },
   { path: 'login', component: UserLoginComponent },
+  { path: 'register', component: UserRegisterComponent },
 ];
 
 @NgModule({
@@ -37,6 +40,7 @@ const routes: Routes = [
     ProductUpdateComponent,
     LogsPanelComponent,
     WelcomeScreenComponent,
+    CenteredCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,7 @@ const routes: Routes = [
     MatInputModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCheckboxModule,
   ],
   exports: [RouterModule],
   providers: [],

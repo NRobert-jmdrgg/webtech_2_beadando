@@ -3,8 +3,15 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-user-register',
   templateUrl: './user-register.component.html',
-  styleUrls: ['./user-register.component.css']
+  styleUrls: ['./user-register.component.css'],
 })
 export class UserRegisterComponent {
-
+  userRegisterData = {
+    name: '',
+    password: '',
+    email: '',
+    phone: '',
+    firstName: '',
+    lastName: '',
+  };
 }
