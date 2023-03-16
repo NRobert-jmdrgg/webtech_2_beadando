@@ -1,0 +1,14 @@
+.user-login-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.user-login-full-width {
+  width: 100%;
+}
+
+.user-login-form-container {
+  margin: 16px 0;
+}

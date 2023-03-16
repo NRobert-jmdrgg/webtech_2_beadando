@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { RouterModule } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { TopBarComponent } from './top-bar/top-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +18,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { WelcomeScreenComponent } from './welcome-screen/welcome-screen.component';
 import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+const routes: Routes = [
+  { path: '', component: WelcomeScreenComponent },
+  { path: 'login', component: UserLoginComponent },
+];
 
 @NgModule({
   declarations: [
@@ -34,7 +40,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot([{}]),
+    RouterModule.forRoot(routes),
     BrowserAnimationsModule,
     MatSlideToggleModule,
     MatTableModule,
@@ -43,7 +49,11 @@ import { MatCardModule } from '@angular/material/card';
     MatToolbarModule,
     MatButtonModule,
     MatCardModule,
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent],
 })

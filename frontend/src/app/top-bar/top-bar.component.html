@@ -1,10 +1,27 @@
 <mat-toolbar>
   <mat-toolbar-row>
-    <button mat-flat-button color="Basic">Nyilvántartás</button>
+    <button
+      mat-flat-button
+      color="Basic"
+      routerLink=""
+      routerLinkActive="active"
+    >
+      Nyilvántartás
+    </button>
     <span class="top-bar-spacer"></span>
     <div class="top-bar-button-row">
-      <button mat-flat-button color="primary" [disabled]="disabled">Termékek</button>
-      <button mat-flat-button color="primary">Bejelentkezés</button>
+      <button mat-flat-button color="primary" [hidden]="!loggedIn">
+        Termékek
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        routerLink="login"
+        routerLinkActive="active"
+        [hidden]="loggedIn"
+      >
+        Bejelentkezés
+      </button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>
