@@ -1,4 +1,4 @@
-import { Types, Schema, Document, Model } from 'mongoose';
+import { Types, Schema, Document, Model, model } from 'mongoose';
 
 export interface IUser extends Document {
   name: string;
@@ -13,11 +13,25 @@ export interface IUser extends Document {
   lastName?: string;
 }
 
+export interface IUserModel extends Model<IUser> {
+  updateName(name: string): Promise<Document>;
+  updatePassword(password: string): Promise<Document>;
+  updateEmail(email: string): Promise<Document>;
+  updatePhone(phone: string): Promise<Document>;
+  toggleAdmin(): Promise<Document>;
+  addProductToFavorites(product: Types.ObjectId): Promise<Document>;
+  removeProductFromFavorites(product: Types.ObjectId): Promise<Document>;
+  updateLoginDate(): Promise<Document>;
+  findByEmail(email: string): Promise<IUser | null>;
+  findByUserName(userName: string): Promise<IUser | null>;
+  findByFullName(firstName: string, lastName: string): Promise<IUser | null>;
+}
+
 const userSchema = new Schema<IUser>(
   {
     name: { type: String, required: true },
     password: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
     phone: String,
     admin: { type: Boolean, default: false },
     isLoggedIn: { type: Boolean, default: false, required: true },
@@ -96,4 +110,4 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-export default new Model('User', userSchema);
+export default model<IUser, IUserModel>('User', userSchema);

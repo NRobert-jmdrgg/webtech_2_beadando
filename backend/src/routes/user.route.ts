@@ -1,16 +1,22 @@
-import { app } from '../index';
+import express from 'express';
 import {
-  addUser,
+  loginUser,
+  requireAuth,
   deleteUser,
   getAllUsers,
   getUserById,
-  giveAdminRights,
   updateUser,
+  registerUser,
 } from '../controllers/user.controller';
 
-app.get('users/', getAllUsers);
-app.get('users/:id/', getUserById);
-app.post('users/:id/update/', updateUser);
-app.delete('users/:id/delete/', deleteUser);
-app.post('users/add/', addUser);
-app.post('users/:id/admin/', giveAdminRights);
+const router = express.Router();
+
+router.get('/', getAllUsers);
+router.post('/login', loginUser);
+router.post('/register', registerUser);
+router.get('/protected', requireAuth);
+router.get('/:id', getUserById);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+
+export default router;
