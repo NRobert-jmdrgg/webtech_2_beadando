@@ -24,12 +24,12 @@ export interface IUserModel extends Model<IUser> {
   updateLoginDate(): Promise<Document>;
   findByEmail(email: string): Promise<IUser | null>;
   findByUserName(userName: string): Promise<IUser | null>;
-  findByFullName(firstName: string, lastName: string): Promise<IUser | null>;
+  findByFullName(firstName: string, lastName: string): Promise<IUser[] | null>;
 }
 
 const userSchema = new Schema<IUser>(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: String,

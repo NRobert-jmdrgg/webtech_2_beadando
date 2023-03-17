@@ -76,7 +76,7 @@ export const loginUser = async (req: LoginRequest, res: Response) => {
 
 export const registerUser = async (req: UserRequest, res: Response) => {
   try {
-    const { email, password, name, phone, firstName, lastName } = req.body;
+    const { email, password, name, phone, firstName, lastName } = req.body.user;
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       email,

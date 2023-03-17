@@ -1,20 +1,33 @@
-import { Types, Schema, Document, Model } from 'mongoose';
+import { Types, Schema, Document, model, Model } from 'mongoose';
 
 export interface IProduct extends Document {
   name: string;
-  brand?: string;
+  brand: string;
   price: number;
   registeredBy?: Types.ObjectId;
-  category?: string;
+  category: string;
+}
+
+export interface IProductModel extends Model<IProduct> {
+  updateName(name: string): Promise<Document>;
+  updateBrand(brand: string): Promise<Document>;
+  increasePrice(plus: number): Promise<Document>;
+  decreasePrice(minus: number): Promise<Document>;
+  updateCategory(category: string): Promise<Document>;
+  findByCategory(category: string): Promise<IProduct[] | null>;
+  findByBrand(brand: string): Promise<IProduct[] | null>;
+  findByName(name: string): Promise<IProduct[] | null>;
+  findByBrandAndName(brand: string, name: string): Promise<IProduct | null>;
+  findPriceLessThan(price: number): Promise<IProduct[] | null>;
 }
 
 const productSchema = new Schema<IProduct>(
   {
     name: { type: String, required: true },
-    brand: String,
-    price: { type: Number, required: true, default: 0 },
+    brand: { type: String, required: true },
+    price: { type: Number, required: true },
     registeredBy: { type: Types.ObjectId, ref: 'User', required: true },
-    category: String,
+    category: { type: String, required: true },
   },
   {
     methods: {
@@ -52,6 +65,9 @@ const productSchema = new Schema<IProduct>(
       findByName(name: string) {
         return this.find({ name: name });
       },
+      findByBrandAndName(brand: string, name: string) {
+        return this.find({ $and: [{ name: name }, { brand: brand }] });
+      },
       findPriceLessThan(price: number) {
         return this.find({ price: { $lt: price } });
       },
@@ -62,4 +78,4 @@ const productSchema = new Schema<IProduct>(
   }
 );
 
-export default new Model('Product', productSchema);
+export default model<IProduct, IProductModel>('Product', productSchema);

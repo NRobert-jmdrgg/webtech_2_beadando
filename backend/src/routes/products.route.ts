@@ -1,4 +1,5 @@
-import { app } from '../index';
+import express from 'express';
+
 import {
   addProduct,
   deleteProduct,
@@ -7,8 +8,12 @@ import {
   updateProduct,
 } from '../controllers/product.controller';
 
-app.get('products/', getAllProducts);
-app.get('products/:id', getProductsById);
-app.post('products/:id/update/', updateProduct);
-app.delete('products/:id/delete/', deleteProduct);
-app.post('products/add/', addProduct);
+const router = express.Router();
+
+router.get('/', getAllProducts);
+router.get('/:id', getProductsById);
+router.post('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
+router.post('/add', addProduct);
+
+export default router;
