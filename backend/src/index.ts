@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { connect } from 'mongoose';
 import userRouter from './routes/user.route';
 import productRouter from './routes/products.route';
+import logRouter from './routes/logs.route';
 
 dotenv.config();
 const port = process.env.PORT;
@@ -17,6 +18,7 @@ connect(process.env.MONGO_URI!, { dbName: 'registry' })
 
     app.use('/users', userRouter);
     app.use('/products', productRouter);
+    app.use('/logs', logRouter);
 
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);

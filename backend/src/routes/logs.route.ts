@@ -1,6 +1,8 @@
-import { app } from '../index';
-import { getLogs, getLogsAfter, getLogsBefore } from '../controllers/logs.controller';
+import express from 'express';
+import { getLogs } from '../controllers/logs.controller';
 
-app.get('logs/', getLogs);
-app.get('logs/after/:after', getLogsAfter);
-app.get('logs/before/:before', getLogsBefore);
+const router = express.Router();
+
+router.get('/', getLogs);
+
+export default router;

@@ -1,9 +1,15 @@
-import { Types, Schema, Document, Model } from 'mongoose';
+import { Types, Schema, Document, model, Model } from 'mongoose';
 
 export interface ILog extends Document {
   user?: Types.ObjectId;
   action: string;
   product?: Types.ObjectId;
+}
+
+export interface ILogModel extends Model<ILog> {
+  findByUser(user: Types.ObjectId): Promise<Document[] | null>;
+  findByAction(action: string): Promise<Document[] | null>;
+  findByProduct(product: Types.ObjectId): Promise<Document[] | null>;
 }
 
 const logSchema = new Schema<ILog>(
@@ -29,4 +35,4 @@ const logSchema = new Schema<ILog>(
   }
 );
 
-export default new Model('Log', logSchema);
+export default model<ILog, ILogModel>('Log', logSchema);
