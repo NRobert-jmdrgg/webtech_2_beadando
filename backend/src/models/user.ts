@@ -5,12 +5,12 @@ export interface IUser extends Document {
   password: string;
   email: string;
   phone?: string;
-  admin: boolean;
   isLoggedIn: boolean;
   lastLogInDate?: Date;
   registeredItems: Types.ObjectId[];
   firstName?: string;
   lastName?: string;
+  refreshToken?: string;
 }
 
 export interface IUserModel extends Model<IUser> {
@@ -18,13 +18,11 @@ export interface IUserModel extends Model<IUser> {
   updatePassword(password: string): Promise<Document>;
   updateEmail(email: string): Promise<Document>;
   updatePhone(phone: string): Promise<Document>;
-  toggleAdmin(): Promise<Document>;
-  addProductToFavorites(product: Types.ObjectId): Promise<Document>;
-  removeProductFromFavorites(product: Types.ObjectId): Promise<Document>;
   updateLoginDate(): Promise<Document>;
   findByEmail(email: string): Promise<IUser | null>;
   findByUserName(userName: string): Promise<IUser | null>;
   findByFullName(firstName: string, lastName: string): Promise<IUser[] | null>;
+  findByRefreshToken(token: string): Promise<IUser | null>;
 }
 
 const userSchema = new Schema<IUser>(
@@ -33,12 +31,12 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: String,
-    admin: { type: Boolean, default: false },
     isLoggedIn: { type: Boolean, default: false, required: true },
     lastLogInDate: Date,
     registeredItems: [{ type: Types.ObjectId, ref: 'Product', default: [] }],
     firstName: String,
     lastName: String,
+    refreshToken: String,
   },
   {
     methods: {
@@ -62,21 +60,6 @@ const userSchema = new Schema<IUser>(
         return this.save();
       },
 
-      toggleAdmin() {
-        this.admin = !this.admin;
-        return this.save();
-      },
-
-      addProductToFavorites(product: Types.ObjectId) {
-        this.registeredItems.push(product);
-        return this.save();
-      },
-
-      removeProductFromFavorites(product: Types.ObjectId) {
-        this.registeredItems = this.registeredItems.filter((item) => item !== product);
-        return this.save();
-      },
-
       updateLoginDate() {
         this.lastLogInDate = new Date();
         return this.save();
@@ -85,15 +68,19 @@ const userSchema = new Schema<IUser>(
 
     statics: {
       findByEmail(email: string) {
-        return this.find({ email: email });
+        return this.findOne({ email: email });
       },
 
       findByUserName(userName: string) {
-        return this.find({ name: userName });
+        return this.findOne({ name: userName });
       },
 
       findByFullName(firstName: string, lastName: string) {
         return this.find({ fistName: firstName, lastName: lastName });
+      },
+
+      findByRefreshToken(token: string) {
+        return this.findOne({ refreshToken: token });
       },
     },
 

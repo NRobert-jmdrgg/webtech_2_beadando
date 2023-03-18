@@ -1,24 +1,30 @@
-import express, { Express, Request, Response } from 'express';
+import express from 'express';
+import cors from 'cors';
 import dotenv from 'dotenv';
-import { connect } from 'mongoose';
 import userRouter from './routes/user.route';
 import productRouter from './routes/products.route';
 import logRouter from './routes/logs.route';
+import authRouter from './routes/auth.route';
+import db from './models';
 
 dotenv.config();
 const port = process.env.PORT;
 
-const app: Express = express();
+const app = express();
 
-connect(process.env.MONGO_URI!, { dbName: 'registry' })
+app.use(cors({ origin: 'http://localhost:8081' }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+db.mongoose
+  .connect(process.env.MONGO_URI!, { dbName: 'registry' })
   .then(() => {
-    console.log('mongodb connected...');
-
-    app.use(express.json());
+    console.log('mongodb connecting...');
 
     app.use('/users', userRouter);
     app.use('/products', productRouter);
     app.use('/logs', logRouter);
+    app.use('/auth', authRouter);
 
     app.listen(port, () => {
       console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
