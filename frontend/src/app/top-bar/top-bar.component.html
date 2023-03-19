@@ -10,7 +10,7 @@
     </button>
     <span class="top-bar-spacer"></span>
     <div class="top-bar-button-row">
-      <button mat-flat-button color="primary" [hidden]="!loggedIn">
+      <button mat-flat-button color="primary" [hidden]="!isLoggedIn()">
         Termékek
       </button>
       <button
@@ -18,7 +18,7 @@
         color="primary"
         routerLink="login"
         routerLinkActive="active"
-        [hidden]="loggedIn || isLoginPage()"
+        [hidden]="isLoggedIn() || isLoginPage()"
       >
         Bejelentkezés
       </button>

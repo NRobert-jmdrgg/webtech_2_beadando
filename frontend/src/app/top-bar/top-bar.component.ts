@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthGuard } from '../auth.guard';
 
 @Component({
   selector: 'app-top-bar',
@@ -7,9 +8,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent {
-  @Input() loggedIn!: boolean;
+  constructor(private router: Router, private authGuard: AuthGuard) {}
 
-  constructor(private router: Router) {}
+  isLoggedIn() {
+    return this.authGuard.canActivate();
+  }
 
   isLoginPage() {
     return this.router.url === '/login';

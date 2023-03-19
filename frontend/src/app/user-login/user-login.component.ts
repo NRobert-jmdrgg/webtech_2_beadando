@@ -1,11 +1,15 @@
 import { Component, Input } from '@angular/core';
 import {
   FormControl,
+  FormGroup,
   FormGroupDirective,
   NgForm,
   Validators,
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
+import { first, tap } from 'rxjs';
+import { AuthService } from '../auth.service';
 
 export class LoginErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -27,19 +31,31 @@ export class LoginErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: [],
 })
 export class UserLoginComponent {
-  emailFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
-
-  passwordFormControl = new FormControl('', [Validators.required]);
-
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    password: new FormControl(null, [Validators.required]),
+  });
   matcher = new LoginErrorStateMatcher();
 
   hide = true;
 
-  loginData = {
-    email: '',
-    password: '',
-  };
+  submitted = false;
+
+  loggedInUser = this.authService.getLoggedInUser();
+
+  constructor(private router: Router, private authService: AuthService) {}
+
+  onSubmit() {
+    this.submitted = true;
+
+    this.authService
+      .login(this.loginForm.value)
+      .pipe(
+        // route to protected/dashboard, if login was successfull
+        tap(() => this.router.navigate(['/']))
+      )
+      .subscribe();
+
+    console.log(JSON.stringify(this.authService.getLoggedInUser(), null, 2));
+  }
 }

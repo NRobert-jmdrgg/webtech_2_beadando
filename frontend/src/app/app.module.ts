@@ -23,11 +23,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CenteredCardComponent } from './centered-card/centered-card.component';
 import { MatIconModule } from '@angular/material/icon';
+import { HttpClientModule } from '@angular/common/http';
+import { ProductComponent } from './product/product.component';
+import { JwtModule } from '@auth0/angular-jwt';
 
 const routes: Routes = [
   { path: '', component: WelcomeScreenComponent },
   { path: 'login', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
+  { path: 'registry', component: RegistryComponent },
 ];
 
 @NgModule({
@@ -42,6 +46,7 @@ const routes: Routes = [
     LogsPanelComponent,
     WelcomeScreenComponent,
     CenteredCardComponent,
+    ProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,6 +64,12 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatCheckboxModule,
     MatIconModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        allowedDomains: ['localhost:3000', 'localhost:4200'],
+      },
+    }),
   ],
   exports: [RouterModule],
   providers: [],

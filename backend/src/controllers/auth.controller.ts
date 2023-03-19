@@ -22,12 +22,20 @@ export const signin = async (req: Request, res: Response) => {
     return;
   }
 
+  const payload = {
+    id: foundUser._id,
+    email: foundUser.email,
+    name: foundUser.name,
+    firstName: foundUser.firstName,
+    lastName: foundUser.lastName,
+  };
+
   // create JWTs
-  const accessToken = jwt.sign({ email: foundUser.email }, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: '30s',
+  const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
+    expiresIn: '60m',
   });
-  const refreshToken = jwt.sign({ email: foundUser.email }, process.env.REFRESH_TOKEN_SECRET!, {
-    expiresIn: '1d',
+  const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET!, {
+    expiresIn: '1w',
   });
 
   // Saving refreshToken with current user
