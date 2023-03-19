@@ -28,6 +28,10 @@ export class AuthService {
       );
   }
 
+  logout() {
+    localStorage.removeItem('accessToken');
+  }
+
   isAuthenticated() {
     return !!localStorage.getItem('accessToken');
   }
@@ -35,7 +39,6 @@ export class AuthService {
   getLoggedInUser() {
     const token = localStorage.getItem('accessToken');
     const decodedToken = this.jwtService.decodeToken(token!);
-    console.log(JSON.stringify(decodedToken, null, 2));
     return decodedToken;
   }
 }

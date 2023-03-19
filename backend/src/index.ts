@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 db.mongoose
   .connect(process.env.MONGO_URI!, { dbName: 'registry' })
   .then(() => {
-    console.log('mongodb connecting...');
+    console.log('mongodb connected');
 
     app.use('/users', userRouter);
     app.use('/products', productRouter);

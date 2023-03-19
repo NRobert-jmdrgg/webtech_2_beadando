@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
-import { first, tap } from 'rxjs';
-import { AuthService } from '../auth.service';
+import { tap } from 'rxjs';
+import { AuthService } from '../../auth.service';
 
 export class LoginErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(
@@ -56,6 +56,6 @@ export class UserLoginComponent {
       )
       .subscribe();
 
-    console.log(JSON.stringify(this.authService.getLoggedInUser(), null, 2));
+    // console.log(JSON.stringify(this.authService.getLoggedInUser(), null, 2));
   }
 }

@@ -18,11 +18,9 @@ export interface IUserModel extends Model<IUser> {
   updatePassword(password: string): Promise<Document>;
   updateEmail(email: string): Promise<Document>;
   updatePhone(phone: string): Promise<Document>;
-  updateLoginDate(): Promise<Document>;
   findByEmail(email: string): Promise<IUser | null>;
   findByUserName(userName: string): Promise<IUser | null>;
   findByFullName(firstName: string, lastName: string): Promise<IUser[] | null>;
-  findByRefreshToken(token: string): Promise<IUser | null>;
 }
 
 const userSchema = new Schema<IUser>(
@@ -31,8 +29,6 @@ const userSchema = new Schema<IUser>(
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: String,
-    isLoggedIn: { type: Boolean, default: false, required: true },
-    lastLogInDate: Date,
     registeredItems: [{ type: Types.ObjectId, ref: 'Product', default: [] }],
     firstName: String,
     lastName: String,
@@ -59,11 +55,6 @@ const userSchema = new Schema<IUser>(
         this.phone = phone;
         return this.save();
       },
-
-      updateLoginDate() {
-        this.lastLogInDate = new Date();
-        return this.save();
-      },
     },
 
     statics: {
@@ -77,18 +68,6 @@ const userSchema = new Schema<IUser>(
 
       findByFullName(firstName: string, lastName: string) {
         return this.find({ fistName: firstName, lastName: lastName });
-      },
-
-      findByRefreshToken(token: string) {
-        return this.findOne({ refreshToken: token });
-      },
-    },
-
-    virtuals: {
-      fullName: {
-        get(this: IUser): string {
-          return this.firstName + ' ' + this.lastName;
-        },
       },
     },
 

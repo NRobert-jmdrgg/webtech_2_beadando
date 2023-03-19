@@ -7,7 +7,7 @@ import { RegistryDataSource, RegistryItem } from './registry-datasource';
 @Component({
   selector: 'app-registry',
   templateUrl: './registry.component.html',
-  styleUrls: ['./registry.component.css']
+  styleUrls: ['./registry.component.css'],
 })
 export class RegistryComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -16,7 +16,7 @@ export class RegistryComponent implements AfterViewInit {
   dataSource: RegistryDataSource;
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['id', 'name'];
+  displayedColumns = ['name', 'brand', 'price', 'category'];
 
   constructor() {
     this.dataSource = new RegistryDataSource();

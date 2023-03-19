@@ -22,6 +22,16 @@
       >
         Bejelentkezés
       </button>
+      <button
+        mat-stroked-button
+        color="primary"
+        (click)="logout()"
+        routerLink="login"
+        routerLinkActive="active"
+        [hidden]="!isLoggedIn() || isLoginPage()"
+      >
+        Kijelentkezés
+      </button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

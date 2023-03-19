@@ -1,0 +1,113 @@
+<app-centered-card>
+  <mat-card-header>Regisztráció</mat-card-header>
+  <mat-card-content class="card-form-container">
+    <form class="card-form" (ngSubmit)="onSubmit()" [formGroup]="registerForm">
+      <mat-form-field class="card-full-width">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          formControlName="email"
+          [errorStateMatcher]="matcher"
+          placeholder="Ex. pat@example.com"
+        />
+        <mat-error
+          *ngIf="
+            this.registerForm.hasError('email') &&
+            !this.registerForm.hasError('required')
+          "
+        >
+          Kérem adja meg az email címét
+        </mat-error>
+        <mat-error *ngIf="this.registerForm.hasError('required')">
+          Az email megadásas <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Felhasználónév</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="!this.registerForm.hasError('required')">
+          Kérem adja meg a felhasználónevét!
+        </mat-error>
+        <mat-error *ngIf="this.registerForm.hasError('required')">
+          A felhasználónév megadása <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Telefonszám</mat-label>
+        <input type="text" formControlName="phone" matInput />
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Vezetéknév</mat-label>
+        <input type="text" matInput formControlName="lastName" />
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Keresztnév</mat-label>
+        <input type="text" formControlName="firstName" matInput />
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Jelszó</mat-label>
+        <input
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          formControlName="password"
+          [errorStateMatcher]="matcher"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+        <mat-error *ngIf="!this.registerForm.hasError('minLength')">
+          A jelszó minimum 8 karakteres
+        </mat-error>
+        <mat-error *ngIf="this.registerForm.hasError('required')">
+          A jelszó megadása <strong>kötelező</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="card-full-width">
+        <mat-label>Jelszó megerősítése</mat-label>
+        <input
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          formControlName="password2"
+          [errorStateMatcher]="matcher"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="this.registerForm.hasError('passwordMismatch')">
+        A jelszó nem egyezik.
+      </mat-error>
+
+      <div style="display: flex">
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          style="text-align: center; margin: 0 auto"
+          [disabled]="
+            this.registerForm.get('email')?.invalid ||
+            this.registerForm.get('name')?.invalid ||
+            this.registerForm.get('password')?.invalid ||
+            this.registerForm.get('password2')?.invalid
+          "
+        >
+          Regisztrál
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</app-centered-card>
