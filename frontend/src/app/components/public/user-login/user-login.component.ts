@@ -9,7 +9,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
-import { AuthService } from '../../auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 export class LoginErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(

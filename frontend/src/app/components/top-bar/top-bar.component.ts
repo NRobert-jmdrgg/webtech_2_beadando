@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/auth.service';
-import { AuthGuard } from '../../auth.guard';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -9,11 +8,7 @@ import { AuthGuard } from '../../auth.guard';
   styleUrls: ['./top-bar.component.css'],
 })
 export class TopBarComponent {
-  constructor(
-    private router: Router,
-    private authGuard: AuthGuard,
-    private authService: AuthService
-  ) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   logout() {
     console.log('logout was called');
@@ -23,7 +18,7 @@ export class TopBarComponent {
   }
 
   isLoggedIn() {
-    return this.authGuard.canActivate();
+    return this.authService.isAuthenticated();
   }
 
   isLoginPage() {
