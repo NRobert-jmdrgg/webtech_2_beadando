@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Product } from '../../../types/product';
+import { Product } from '@models/product';
 import { HttpClient } from '@angular/common/http';
 
 @Component({

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { Product } from '../../../types/product';
+import { Product } from 'src/app/models/product';
 import { Router } from '@angular/router';
 
 /**
