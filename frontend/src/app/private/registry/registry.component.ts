@@ -1,18 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import {
-  MatTableDataSource,
-  MatTableDataSourcePaginator,
-} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-export interface ProductElement {
-  _id: string;
-  name: string;
-  brand: string;
-  price: number;
-  registeredBy?: string;
-  category: string;
-}
+import { Product } from 'src/app/models/product';
+import { Router } from '@angular/router';
 
 /**
  * @title Binding event handlers and properties to the table rows.
@@ -23,8 +14,8 @@ export interface ProductElement {
   templateUrl: 'registry.component.html',
 })
 export class RegistryComponent implements AfterViewInit, OnInit {
-  constructor(private http: HttpClient) {
-    this.dataSource = new MatTableDataSource<ProductElement>();
+  constructor(private http: HttpClient, private router: Router) {
+    this.dataSource = new MatTableDataSource<Product>();
   }
 
   displayedColumns: string[] = [
@@ -35,13 +26,15 @@ export class RegistryComponent implements AfterViewInit, OnInit {
     'category',
   ];
 
-  data!: ProductElement[];
+  dataSource: MatTableDataSource<Product>;
 
-  dataSource: MatTableDataSource<ProductElement>;
-
-  clickedRows = new Set<ProductElement>();
+  clickedRows = new Set<Product>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  onProductClick(id: string) {
+    this.router.navigate(['/product', id]);
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -49,12 +42,11 @@ export class RegistryComponent implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.http
-      .get<ProductElement[]>('http://localhost:3000/products/lower/0/10')
+      .get<Product[]>('http://localhost:3000/products/lower/0/10')
       .subscribe({
         next: (data) => {
-          this.data = data;
-          console.log(this.data);
-          this.dataSource.data = this.data;
+          console.log(data);
+          this.dataSource.data = data;
         },
         error: (error) => console.error(error),
       });

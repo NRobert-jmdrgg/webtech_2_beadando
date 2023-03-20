@@ -36,6 +36,7 @@ const routes: Routes = [
   { path: 'login', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
   { path: 'registry', component: RegistryComponent },
+  { path: 'product/:id', component: ProductComponent },
 ];
 
 @NgModule({

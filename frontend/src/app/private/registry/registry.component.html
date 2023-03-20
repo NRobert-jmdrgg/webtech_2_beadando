@@ -22,9 +22,8 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr
     mat-row
-    (click)="clickedRows.add(row)"
-    [class.demo-row-is-clicked]="clickedRows.has(row)"
     *matRowDef="let row; columns: displayedColumns"
+    (click)="onProductClick(row._id)"
   ></tr>
 </table>
 <mat-paginator
@@ -33,15 +32,3 @@
   aria-label="Select page of periodic elements"
 >
 </mat-paginator>
-
-<div>
-  <h3>Click Log</h3>
-</div>
-
-<div *ngIf="!clickedRows.size">Clicked rows will be logged here</div>
-
-<ul>
-  <li *ngFor="let clickedRow of clickedRows">
-    Clicked on {{ clickedRow.name }}
-  </li>
-</ul>

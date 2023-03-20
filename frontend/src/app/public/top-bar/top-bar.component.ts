@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
 import { AuthService } from 'src/app/auth.service';
 import { AuthGuard } from '../../auth.guard';
 
