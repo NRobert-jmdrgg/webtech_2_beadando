@@ -14,6 +14,15 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductsCount = async (req: Request, res: Response) => {
+  try {
+    res.status(200).send({ length: await Product.countDocuments() });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('An error occurred');
+  }
+};
+
 export const getProductsFromLower = async (req: Request, res: Response) => {
   try {
     const { lower, count } = req.params;

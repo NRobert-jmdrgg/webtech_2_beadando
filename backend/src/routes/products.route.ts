@@ -5,6 +5,7 @@ import {
   deleteProduct,
   getAllProducts,
   getProductsById,
+  getProductsCount,
   getProductsFromLower,
   updateProduct,
 } from '../controllers/product.controller';
@@ -12,6 +13,7 @@ import {
 const router = express.Router();
 
 router.get('/', getAllProducts);
+router.get('/count', getProductsCount);
 router.get('/:id', getProductsById);
 router.get('/lower/:lower/:count', getProductsFromLower);
 router.post('/:id', updateProduct);

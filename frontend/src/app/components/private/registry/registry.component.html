@@ -1,3 +1,9 @@
+<mat-paginator
+  [length]="productsLength"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[5, 10, 25]"
+  (page)="loadProducts($event)"
+></mat-paginator>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
   <ng-container matColumnDef="brand">
     <th mat-header-cell *matHeaderCellDef>Márka</th>
@@ -26,9 +32,3 @@
     (click)="onProductClick(row._id)"
   ></tr>
 </table>
-<mat-paginator
-  [pageSizeOptions]="[5, 10, 20]"
-  showFirstLastButtons
-  aria-label="Select page of periodic elements"
->
-</mat-paginator>

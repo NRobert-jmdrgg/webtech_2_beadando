@@ -19,7 +19,7 @@ export const signin = async (req: Request, res: Response) => {
   console.log('sign in was called');
 
   if (!foundUser) {
-    res.sendStatus(401); //Unauthorized
+    res.status(401); //Unauthorized
     return;
   }
 
@@ -27,7 +27,7 @@ export const signin = async (req: Request, res: Response) => {
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) {
-    res.sendStatus(401);
+    res.status(401);
     return;
   }
 

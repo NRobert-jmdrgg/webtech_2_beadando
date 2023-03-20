@@ -1,9 +1,7 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/models/product';
 import { Router } from '@angular/router';
+import { ProductService } from '@services/product/product.service';
 
 /**
  * @title Binding event handlers and properties to the table rows.
@@ -13,42 +11,44 @@ import { Router } from '@angular/router';
   styleUrls: ['registry.component.css'],
   templateUrl: 'registry.component.html',
 })
-export class RegistryComponent implements AfterViewInit, OnInit {
-  constructor(private http: HttpClient, private router: Router) {
-    this.dataSource = new MatTableDataSource<Product>();
+export class RegistryComponent implements OnInit {
+  productsLength!: number;
+  currentPage: number;
+  pageSize: number;
+
+  displayedColumns = ['name', 'brand', 'price', 'registeredBy', 'category'];
+
+  dataSource: Product[];
+
+  constructor(private router: Router, private productService: ProductService) {
+    this.dataSource = [];
+    this.currentPage = 0;
+    this.pageSize = 10;
   }
-
-  displayedColumns: string[] = [
-    'name',
-    'brand',
-    'price',
-    'registeredBy',
-    'category',
-  ];
-
-  dataSource: MatTableDataSource<Product>;
-
-  clickedRows = new Set<Product>();
-
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   onProductClick(id: string) {
     this.router.navigate(['/product', id]);
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+  loadProducts(event: any) {
+    console.log(JSON.stringify(event, null, 2));
+    const { pageIndex, pageSize } = event;
+    this.productService.getProducts(pageIndex * pageSize, pageSize).subscribe({
+      next: (products) => (this.dataSource = products),
+
+      error: (error) => console.error(error),
+    });
   }
 
   ngOnInit() {
-    this.http
-      .get<Product[]>('http://localhost:3000/products/lower/0/10')
-      .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.dataSource.data = data;
-        },
-        error: (error) => console.error(error),
-      });
+    this.productService.getProducts(0, this.pageSize).subscribe({
+      next: (products) => (this.dataSource = products),
+      error: (error) => console.error(error),
+    });
+
+    this.productService.getProductsCount().subscribe({
+      next: (products) => (this.productsLength = products.length),
+      error: (error) => console.error(error),
+    });
   }
 }
