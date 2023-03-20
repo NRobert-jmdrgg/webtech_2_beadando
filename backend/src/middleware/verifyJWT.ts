@@ -1,9 +1,6 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-
-export interface EmailJwtPayload extends JwtPayload {
-  email: string;
-}
+import { AuthPayload } from '../controllers/auth.controller';
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
@@ -16,8 +13,10 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as EmailJwtPayload;
-    req.body.email = decoded.email;
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET!) as AuthPayload;
+
+    req.body.verified = !!decoded;
+
     next();
   } catch (err) {
     res.status(403).send('Invalid Token');

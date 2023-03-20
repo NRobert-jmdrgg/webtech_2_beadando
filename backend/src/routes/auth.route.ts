@@ -5,7 +5,8 @@ import { verifyToken } from '../middleware/verifyJWT';
 const router = express.Router();
 
 router.post('/signin', signin);
-router.get('/protected', verifyToken, (req, res) => {
-  res.send(`Welcome ${req.body.email}!`);
+router.post('/', verifyToken, (req, res) => {
+  console.log('hello world');
+  res.send(req.body.verified);
 });
 export default router;

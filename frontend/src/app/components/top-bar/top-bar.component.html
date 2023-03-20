@@ -38,6 +38,15 @@
       >
         Kijelentkezés
       </button>
+      <button
+        mat-icon-button
+        color="accent"
+        aria-label="Example icon button with a plus one icon"
+        (click)="goToUserPage()"
+        [hidden]="!isLoggedIn() || isLoginPage()"
+      >
+        <mat-icon>person</mat-icon>
+      </button>
     </div>
   </mat-toolbar-row>
 </mat-toolbar>

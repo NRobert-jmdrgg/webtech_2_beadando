@@ -5,9 +5,11 @@
 .top-bar-button-row {
   display: table-cell;
   max-width: 600px;
-  margin: 8px 8px 8px 0;
+  margin: 8px 0 8px 0;
+  display: flex;
+  align-items: center;
 }
 
 .top-bar-button-row button {
-  margin: 0 8px;
+  margin: auto 8px;
 }

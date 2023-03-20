@@ -1,7 +1,15 @@
 import { Request, Response } from 'express';
 import db from '../models';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
+export interface AuthPayload extends JwtPayload {
+  id: string;
+  email: string;
+  name: string;
+  firstName?: string;
+  lastName?: string;
+}
 
 export const signin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -23,7 +31,7 @@ export const signin = async (req: Request, res: Response) => {
     return;
   }
 
-  const payload = {
+  const payload: AuthPayload = {
     id: foundUser._id,
     email: foundUser.email,
     name: foundUser.name,
@@ -36,9 +44,10 @@ export const signin = async (req: Request, res: Response) => {
     expiresIn: '60m',
   });
 
-  // Saving refreshToken with current user
   foundUser.isLoggedIn = true;
   await foundUser.save();
 
-  res.json({ accessToken });
+  const expiresIn = new Date();
+
+  res.json({ accessToken, exiresIn: expiresIn.setMinutes(expiresIn.getMinutes() + 60) });
 };

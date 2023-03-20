@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -19,6 +19,10 @@ export class TopBarComponent {
 
   isLoggedIn() {
     return this.authService.isAuthenticated();
+  }
+
+  goToUserPage() {
+    this.router.navigate([`/user/${this.authService.user.id}`]);
   }
 
   isLoginPage() {
