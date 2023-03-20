@@ -26,7 +26,7 @@ const productSchema = new Schema<IProduct>(
     name: { type: String, required: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true },
-    registeredBy: { type: Types.ObjectId, ref: 'User', required: true },
+    registeredBy: { type: Types.ObjectId, ref: 'User', default: '' },
     category: { type: String, required: true },
   },
   {

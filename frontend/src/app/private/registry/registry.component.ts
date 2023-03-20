@@ -1,30 +1,62 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTable } from '@angular/material/table';
-import { RegistryDataSource, RegistryItem } from './registry-datasource';
+import {
+  MatTableDataSource,
+  MatTableDataSourcePaginator,
+} from '@angular/material/table';
+import { HttpClient } from '@angular/common/http';
+export interface ProductElement {
+  _id: string;
+  name: string;
+  brand: string;
+  price: number;
+  registeredBy?: string;
+  category: string;
+}
 
+/**
+ * @title Binding event handlers and properties to the table rows.
+ */
 @Component({
   selector: 'app-registry',
-  templateUrl: './registry.component.html',
-  styleUrls: ['./registry.component.css'],
+  styleUrls: ['registry.component.css'],
+  templateUrl: 'registry.component.html',
 })
-export class RegistryComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<RegistryItem>;
-  dataSource: RegistryDataSource;
-
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
-  displayedColumns = ['name', 'brand', 'price', 'category'];
-
-  constructor() {
-    this.dataSource = new RegistryDataSource();
+export class RegistryComponent implements AfterViewInit, OnInit {
+  constructor(private http: HttpClient) {
+    this.dataSource = new MatTableDataSource<ProductElement>();
   }
 
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+  displayedColumns: string[] = [
+    'name',
+    'brand',
+    'price',
+    'registeredBy',
+    'category',
+  ];
+
+  data!: ProductElement[];
+
+  dataSource: MatTableDataSource<ProductElement>;
+
+  clickedRows = new Set<ProductElement>();
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-    this.table.dataSource = this.dataSource;
+  }
+
+  ngOnInit() {
+    this.http
+      .get<ProductElement[]>('http://localhost:3000/products/lower/0/10')
+      .subscribe({
+        next: (data) => {
+          this.data = data;
+          console.log(this.data);
+          this.dataSource.data = this.data;
+        },
+        error: (error) => console.error(error),
+      });
   }
 }

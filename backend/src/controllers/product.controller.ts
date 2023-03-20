@@ -14,6 +14,16 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 };
 
+export const getProductsFromLower = async (req: Request, res: Response) => {
+  try {
+    const { lower, count } = req.params;
+    res.status(200).send(await Product.find({}).skip(Number(lower)).limit(Number(count)));
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('An error occurred');
+  }
+};
+
 export const getProductsById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

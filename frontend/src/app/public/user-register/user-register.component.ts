@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   AbstractControl,
@@ -42,7 +43,7 @@ export class UserRegisterComponent {
 
   hide = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {}
 
   onSubmit() {
     const registerRequest = {
@@ -58,16 +59,20 @@ export class UserRegisterComponent {
 
     console.log(JSON.stringify(registerRequest, null, 2));
 
-    fetch('http://localhost:3000/users/add/', {
-      method: 'POST',
-      body: JSON.stringify(registerRequest),
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => response.text())
-      .then((data) => {
-        console.log(data);
-        this.router.navigate(['/']);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    this.http
+      .post<string>('http://localhost:3000/users/add/', registerRequest, {
+        headers,
       })
-      .catch((error) => console.error(error));
+      .subscribe({
+        next: (data) => {
+          console.log(data);
+          this.router.navigate(['/']);
+        },
+        error: (error) => console.error(error),
+      });
   }
 }
