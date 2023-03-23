@@ -22,9 +22,18 @@
       <button
         mat-flat-button
         color="primary"
+        [hidden]="!atThisPage('/registry')"
+        routerLink="product-add"
+        routerLinkActive="active"
+      >
+        Hozzáad
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
         routerLink="login"
         routerLinkActive="active"
-        [hidden]="isLoggedIn() || isLoginPage()"
+        [hidden]="isLoggedIn() || atThisPage('/login')"
       >
         Bejelentkezés
       </button>
@@ -34,7 +43,7 @@
         (click)="logout()"
         routerLink="login"
         routerLinkActive="active"
-        [hidden]="!isLoggedIn() || isLoginPage()"
+        [hidden]="!isLoggedIn() || atThisPage('/login')"
       >
         Kijelentkezés
       </button>
@@ -43,7 +52,7 @@
         color="accent"
         aria-label="Example icon button with a plus one icon"
         (click)="goToUserPage()"
-        [hidden]="!isLoggedIn() || isLoginPage()"
+        [hidden]="!isLoggedIn() || atThisPage('/login')"
       >
         <mat-icon>person</mat-icon>
       </button>

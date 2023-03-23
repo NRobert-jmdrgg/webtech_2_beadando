@@ -25,7 +25,7 @@ export class TopBarComponent {
     this.router.navigate([`/user/${this.authService.user.id}`]);
   }
 
-  isLoginPage() {
-    return this.router.url === '/login';
+  atThisPage(route: string) {
+    return this.router.url === route;
   }
 }
