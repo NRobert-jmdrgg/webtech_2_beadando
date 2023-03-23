@@ -32,6 +32,7 @@ const logSchema = new Schema<ILog>(
     },
     collection: 'logs',
     timestamps: true,
+    strict: false,
   }
 );
 

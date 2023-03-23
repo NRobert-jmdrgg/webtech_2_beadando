@@ -26,7 +26,7 @@ const productSchema = new Schema<IProduct>(
     name: { type: String, required: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true },
-    registeredBy: { type: Types.ObjectId, ref: 'User', default: '' },
+    registeredBy: { type: Types.ObjectId, ref: 'User' },
     category: { type: String, required: true },
   },
   {
@@ -75,6 +75,7 @@ const productSchema = new Schema<IProduct>(
 
     collection: 'products',
     timestamps: true,
+    strict: false,
   }
 );
 

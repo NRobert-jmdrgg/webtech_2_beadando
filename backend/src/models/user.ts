@@ -73,6 +73,7 @@ const userSchema = new Schema<IUser>(
 
     collection: 'users',
     timestamps: true,
+    strict: false,
   }
 );
 
