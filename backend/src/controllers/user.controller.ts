@@ -11,7 +11,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
     res.status(200).send(await User.find({}));
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send({ message: 'An error occurred' });
   }
 };
 
@@ -32,10 +32,10 @@ export const addUser = async (req: UserRequest, res: Response) => {
     });
 
     await user.save();
-    res.status(201).send('User created');
+    res.status(201).send({ message: 'User created' });
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send({ message: 'An error occurred' });
   }
 };
 
@@ -45,7 +45,7 @@ export const getUserById = async (req: Request, res: Response) => {
     res.status(200).send(await User.findById(id));
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send({ message: 'An error occurred' });
   }
 };
 
@@ -54,13 +54,13 @@ export const updateUser = async (req: UserRequest, res: Response) => {
     const { id } = req.params;
     const user = await User.findByIdAndUpdate(id, req.body.user);
     if (!user) {
-      return res.status(404).send('User not found');
+      return res.status(404).send({ message: 'User not found' });
     }
     await user.save();
-    res.status(200).send('User updated');
+    res.status(200).send({ message: 'User updated' });
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send({ message: 'An error occurred' });
   }
 };
 
@@ -69,9 +69,9 @@ export const deleteUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     await User.findByIdAndDelete(id);
 
-    res.status(200).send('User deleted');
+    res.status(200).send({ message: 'User deleted' });
   } catch (error) {
     console.error(error);
-    res.status(500).send('An error occurred');
+    res.status(500).send({ message: 'An error occurred' });
   }
 };

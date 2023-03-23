@@ -9,7 +9,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
   console.log(token);
 
   if (!token) {
-    return res.status(401).send('Access Denied');
+    return res.status(401).send({ message: 'Access Denied' });
   }
 
   try {
@@ -19,6 +19,6 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
 
     next();
   } catch (err) {
-    res.status(403).send('Invalid Token');
+    res.status(403).send({ message: 'Invalid Token' });
   }
 };
