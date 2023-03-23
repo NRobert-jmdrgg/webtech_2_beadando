@@ -1,10 +1,91 @@
 <app-centered-card>
-  <mat-card-header> {{ product.brand }} - {{ product.name }} </mat-card-header>
-  <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
-  <mat-card-content>
-    <p>{{ product.price }}</p>
+  <mat-card-header>A termék adatai</mat-card-header>
+  <mat-card-content class="card-form-container">
+    <form
+      class="card-form"
+      [formGroup]="productModifyForm"
+      (submit)="onSubmit()"
+    >
+      <mat-form-field class="card-full-width">
+        <mat-label>Név</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+          A termék nevének megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Márka</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="brand"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+          A termék márkájának megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Ár</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="price"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+          A termék árának megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Kategória</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="category"
+          [errorStateMatcher]="matcher"
+        />
+      </mat-form-field>
+      <mat-error *ngIf="this.productModifyForm.hasError('required')">
+        A termék kategóriájának megadása kötelező!
+      </mat-error>
+      <div style="display: flex">
+        <button
+          type="button"
+          mat-flat-button
+          color="primary"
+          [hidden]="edit"
+          (click)="toggleEditMode()"
+          style="margin: 0 0 20px 18px"
+        >
+          Szerkesztés
+        </button>
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          [hidden]="!edit"
+          style="margin: 0 0 20px 18px"
+          [disabled]="productModifyForm.invalid"
+        >
+          Mentés
+        </button>
+        <button
+          *ngIf="edit"
+          type="reset"
+          mat-stroked-button
+          color="primary"
+          (click)="cancel()"
+          style="margin: 0 18px 20px auto"
+        >
+          Mégsem
+        </button>
+      </div>
+    </form>
   </mat-card-content>
-  <mat-card-footer>
-    <button>Szerkesztés</button>
-  </mat-card-footer>
 </app-centered-card>

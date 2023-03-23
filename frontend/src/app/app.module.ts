@@ -12,7 +12,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { UserLoginComponent } from './components/public/user-login/user-login.component';
 import { UserRegisterComponent } from './components/public/user-register/user-register.component';
 import { ProductAddComponent } from './components/private/product-add/product-add.component';
-import { ProductUpdateComponent } from './components/private/product-update/product-update.component';
 import { LogsPanelComponent } from './components/private/logs-panel/logs-panel.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,7 +36,10 @@ const routes: Routes = [
   { path: '', component: WelcomeScreenComponent },
   { path: 'login', component: UserLoginComponent },
   { path: 'register', component: UserRegisterComponent },
-  { path: 'registry', component: RegistryComponent, canActivate: [authGuard] },
+  {
+    path: 'registry',
+    component: RegistryComponent /*canActivate: [authGuard]*/,
+  },
   { path: 'product/:id', component: ProductComponent },
   { path: 'user/:id', component: UserPageComponent },
 ];
@@ -50,7 +52,6 @@ const routes: Routes = [
     UserLoginComponent,
     UserRegisterComponent,
     ProductAddComponent,
-    ProductUpdateComponent,
     LogsPanelComponent,
     WelcomeScreenComponent,
     CenteredCardComponent,
