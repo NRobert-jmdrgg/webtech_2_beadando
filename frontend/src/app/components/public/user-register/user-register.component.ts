@@ -9,7 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginErrorStateMatcher as RegistrationErrorSateMatcher } from '../user-login/user-login.component';
+import { FormErrorStateMatcher } from '../user-login/user-login.component';
 
 export const passwordMatchValidator: ValidatorFn = (
   control: AbstractControl
@@ -39,7 +39,7 @@ export class UserRegisterComponent {
     { validators: passwordMatchValidator }
   );
 
-  matcher = new RegistrationErrorSateMatcher();
+  matcher = new FormErrorStateMatcher();
 
   hide = false;
 
@@ -47,17 +47,8 @@ export class UserRegisterComponent {
 
   onSubmit() {
     const registerRequest = {
-      user: {
-        email: this.registerForm.value.email,
-        name: this.registerForm.value.name,
-        password: this.registerForm.value.password,
-        phone: this.registerForm.value.phone,
-        firstName: this.registerForm.value.firstName,
-        lastName: this.registerForm.value.lastName,
-      },
+      user: this.registerForm.value,
     };
-
-    console.log(JSON.stringify(registerRequest, null, 2));
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -68,10 +59,7 @@ export class UserRegisterComponent {
         headers,
       })
       .subscribe({
-        next: (data) => {
-          console.log(data);
-          this.router.navigate(['/']);
-        },
+        next: () => this.router.navigate(['/']),
         error: (error) => console.error(error),
       });
   }
