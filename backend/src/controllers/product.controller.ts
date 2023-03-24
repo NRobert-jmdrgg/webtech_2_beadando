@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
+import { Types } from 'mongoose';
 import Product, { IProduct } from '../models/product';
+import User from '../models/user';
 
 interface ProductRequest extends Request {
   product?: IProduct;
@@ -26,7 +28,9 @@ export const getProductsCount = async (req: Request, res: Response) => {
 export const getProductsFromLower = async (req: Request, res: Response) => {
   try {
     const { lower, count } = req.params;
-    res.status(200).send(await Product.find({}).skip(Number(lower)).limit(Number(count)));
+    res
+      .status(200)
+      .send(await Product.find().populate('registeredBy', 'name').skip(Number(lower)).limit(Number(count)));
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'An error occurred' });
@@ -48,6 +52,7 @@ export const updateProduct = async (req: ProductRequest, res: Response) => {
     const { id } = req.params;
 
     const updatedProduct = await Product.findByIdAndUpdate(id, req.body.product);
+
     if (!updatedProduct) {
       return res.status(404).send({ message: 'Product not found' });
     }
@@ -73,15 +78,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 export const addProduct = async (req: ProductRequest, res: Response) => {
   try {
-    const product = new Product({
-      ...req.body.product,
-    });
-
-    const alreadyExists = await Product.findByBrandAndName(req.body.product.brand, req.body.product.name);
-    if (alreadyExists) {
-      return res.status(404).send({ message: 'Product already exists!' });
-    }
-
+    const product = new Product({ registeredBy: new Types.ObjectId(req.body.registeredBy), ...req.body.product });
     await product.save();
     res.status(201).send({ message: 'Product created' });
   } catch (error) {
