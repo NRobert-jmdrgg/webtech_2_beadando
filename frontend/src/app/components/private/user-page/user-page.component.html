@@ -1,1 +1,7 @@
-<p>user-page works!</p>
+<app-centered-card class="user-page">
+  <mat-card-title>Felhasználó adatok</mat-card-title>
+  <mat-card-content>
+    <p>{{ user?.name }} - {{ user?.lastName }} {{ user?.firstName }}</p>
+    <p>{{ user?.email }}</p>
+  </mat-card-content>
+</app-centered-card>
