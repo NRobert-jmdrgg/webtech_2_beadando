@@ -3,6 +3,6 @@ export interface Product {
   name: string;
   brand: string;
   price: number;
-  registeredBy?: { _id: string; name: string };
+  registeredBy?: { _id: string; name: string } | string;
   category: string;
 }

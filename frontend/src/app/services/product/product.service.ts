@@ -8,6 +8,12 @@ import { Product } from '@models/product';
 export class ProductService {
   constructor(private http: HttpClient) {}
 
+  deleteProduct(id: string) {
+    return this.http.delete<{ message: string }>(
+      `http://localhost:3000/products/${id}`
+    );
+  }
+
   addProduct(product: {
     name?: string | null;
     brand?: string | null;
