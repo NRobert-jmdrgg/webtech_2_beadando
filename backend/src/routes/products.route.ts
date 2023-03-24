@@ -16,7 +16,7 @@ router.get('/', getAllProducts);
 router.get('/count', getProductsCount);
 router.get('/:id', getProductsById);
 router.get('/lower/:lower/:count', getProductsFromLower);
-router.post('/:id', updateProduct);
+router.put('/:id', updateProduct);
 router.delete('/:id', deleteProduct);
 router.post('/add', addProduct);
 
