@@ -5,7 +5,7 @@ import userRouter from './routes/user.route';
 import productRouter from './routes/products.route';
 import logRouter from './routes/logs.route';
 import authRouter from './routes/auth.route';
-import db from './models';
+import mongoose from 'mongoose';
 
 dotenv.config();
 const port = process.env.PORT;
@@ -16,7 +16,7 @@ app.use(cors({ origin: 'http://localhost:8081' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-db.mongoose
+mongoose
   .connect(process.env.MONGO_URI!, { dbName: 'registry' })
   .then(() => {
     console.log('mongodb connected');
