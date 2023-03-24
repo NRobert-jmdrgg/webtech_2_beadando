@@ -4,6 +4,7 @@ import { ProductService } from '@services/product/product.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Product } from '@models/product';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product',
@@ -21,7 +22,8 @@ export class ProductComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private snackBar: MatSnackBar
   ) {
     this.edit = false;
     this.action = 'Szerkeszt';
@@ -57,7 +59,10 @@ export class ProductComponent implements OnInit {
     this.productService
       .updateProduct({ _id: this.productId, ...this.productModifyForm.value })
       .subscribe({
-        next: () => this.router.navigate(['/registry']),
+        next: () => {
+          this.snackBar.open('Termék frissítve', 'ok', { duration: 3000 });
+          this.router.navigate(['/registry']);
+        },
         error: (error) => console.error(JSON.stringify(error, null, 2)),
       });
   }
