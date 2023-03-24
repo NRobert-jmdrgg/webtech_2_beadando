@@ -13,7 +13,7 @@
       <button
         mat-flat-button
         color="primary"
-        [hidden]="!isLoggedIn()"
+        [hidden]="!isLoggedIn() || atPage('/registry')"
         routerLink="registry"
         routerLinkActive="active"
       >
