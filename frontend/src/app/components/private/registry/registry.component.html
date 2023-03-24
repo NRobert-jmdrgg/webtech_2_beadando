@@ -22,7 +22,7 @@
   </ng-container>
   <ng-container matColumnDef="registeredBy">
     <th mat-header-cell *matHeaderCellDef>Hozzáadta</th>
-    <td mat-cell *matCellDef="let element">{{ element.registeredBy }}</td>
+    <td mat-cell *matCellDef="let element">{{ element.registeredBy?.name }}</td>
   </ng-container>
   <ng-container matColumnDef="category">
     <th mat-header-cell *matHeaderCellDef>Kategória</th>
