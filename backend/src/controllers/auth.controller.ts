@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import db from '../models';
 import bcrypt from 'bcrypt';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import User from '../models/user';
 
 export interface AuthPayload extends JwtPayload {
   id: string;
@@ -14,25 +14,23 @@ export interface AuthPayload extends JwtPayload {
 export const signin = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  const foundUser = await db.User.findByEmail(email);
+  const foundUser = await User.findOne({ email: email });
 
   console.log('sign in was called');
 
   if (!foundUser) {
-    res.status(401); //Unauthorized
-    return;
+    return res.status(401).send({ message: 'Nincs ilyen email cím' }); //Unauthorized
   }
 
   // evaluate password
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) {
-    res.status(401);
-    return;
+    return res.status(401).send({ message: 'Hibás jelszó' });
   }
 
   const payload: AuthPayload = {
-    id: foundUser._id,
+    id: foundUser._id.toString(),
     email: foundUser.email,
     name: foundUser.name,
     firstName: foundUser.firstName,
@@ -41,13 +39,11 @@ export const signin = async (req: Request, res: Response) => {
 
   // create JWTs
   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: '60m',
+    expiresIn: '1h',
   });
 
   foundUser.isLoggedIn = true;
   await foundUser.save();
 
-  const expiresIn = new Date();
-
-  res.json({ accessToken, exiresIn: expiresIn.setMinutes(expiresIn.getMinutes() + 60) });
+  res.json({ accessToken });
 };
