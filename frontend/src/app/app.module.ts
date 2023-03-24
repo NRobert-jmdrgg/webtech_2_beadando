@@ -27,6 +27,7 @@ import { ProductComponent } from './components/private/product/product.component
 import { JwtModule } from '@auth0/angular-jwt';
 import { UserPageComponent } from './components/private/user-page/user-page.component';
 import { authGuard } from './guards/auth/auth.guard';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export function TokenGetter() {
   return localStorage.getItem('accessToken');
@@ -85,6 +86,7 @@ const routes: Routes = [
     MatCheckboxModule,
     MatIconModule,
     HttpClientModule,
+    MatSnackBarModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: TokenGetter,
