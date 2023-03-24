@@ -23,7 +23,7 @@ export class ProductService {
   }
 
   updateProduct(product: Product) {
-    return this.http.post<{ message: string }>(
+    return this.http.put<{ message: string }>(
       `http://localhost:3000/products/${product._id}`,
       {
         product: {
