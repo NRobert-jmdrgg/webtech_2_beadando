@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
@@ -19,12 +20,24 @@ export class UserLoginComponent {
 
   hide = true;
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: (error) => console.error(error),
+      next: () => {
+        this.snackBar.open('Sikeres bejelentkezés', 'ok', { duration: 3000 });
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        const code = error.status;
+        if (code !== 500) {
+          this.snackBar.open(error.error.message, 'ok', { duration: 3000 });
+        }
+      },
     });
   }
 }

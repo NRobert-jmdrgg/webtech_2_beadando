@@ -7,6 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
@@ -43,12 +44,25 @@ export class UserRegisterComponent {
 
   hide = false;
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(
+    private router: Router,
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) {}
 
   onSubmit() {
     this.userService.register(this.registerForm.value).subscribe({
-      next: () => this.router.navigate(['/']),
-      error: (error) => console.error(error),
+      next: () => {
+        this.snackBar.open('Sikeres regisztráció', 'ok', { duration: 3000 });
+        this.router.navigate(['/']);
+      },
+      error: (error) => {
+        const code = error.status;
+
+        if (code !== 500) {
+          this.snackBar.open(error.error.message, 'ok', { duration: 3000 });
+        }
+      },
     });
   }
 }

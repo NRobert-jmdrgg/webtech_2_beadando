@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AuthService } from '@services/auth/auth.service';
 import { ProductService } from '@services/product/product.service';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 
@@ -18,11 +20,30 @@ export class ProductAddComponent {
   });
   matcher = new FormErrorStateMatcher();
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(
+    private router: Router,
+    private productService: ProductService,
+    private authService: AuthService,
+    private snackBar: MatSnackBar
+  ) {}
 
   onSubmit() {
-    this.productService.addProduct(this.productAddForm.value).subscribe({
-      next: (res) => console.log(res),
+    this.authService.currentUser$.subscribe({
+      next: (user) => {
+        console.log(user);
+        this.productService
+          .addProduct({
+            ...this.productAddForm.value,
+            registeredBy: user?.id,
+          })
+          .subscribe({
+            next: () => {
+              this.snackBar.open('Termék hozzáadva', 'ok', { duration: 3000 });
+              this.router.navigate(['/registry']);
+            },
+            error: (error) => console.error(error),
+          });
+      },
       error: (error) => console.error(error),
     });
     this.router.navigate(['/registry']);
