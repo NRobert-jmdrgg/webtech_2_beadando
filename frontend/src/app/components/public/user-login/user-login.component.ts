@@ -1,29 +1,9 @@
 import { Component } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
-import { Router } from '@angular/router';
-import { tap } from 'rxjs';
-import { AuthService } from '@services/auth/auth.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
-export class FormErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
-  }
-}
+import { Router } from '@angular/router';
+import { AuthService } from '@services/auth/auth.service';
+import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 
 @Component({
   selector: 'app-user-login',
