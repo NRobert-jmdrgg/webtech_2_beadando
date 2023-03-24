@@ -8,33 +8,27 @@
           type="email"
           matInput
           formControlName="email"
-          [errorStateMatcher]="matcher"
           placeholder="Ex. pat@example.com"
         />
         <mat-error
           *ngIf="
-            this.registerForm.hasError('email') &&
-            !this.registerForm.hasError('required')
+            this.registerForm.get('email')?.hasError('email') &&
+            !this.registerForm.get('email')?.hasError('required')
           "
         >
           Kérem adja meg az email címét
         </mat-error>
-        <mat-error *ngIf="this.registerForm.hasError('required')">
+        <mat-error *ngIf="this.registerForm.get('email')?.hasError('required')">
           Az email megadásas <strong>kötelező</strong>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="card-full-width">
         <mat-label>Felhasználónév</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="name"
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="!this.registerForm.hasError('required')">
+        <input type="text" matInput formControlName="name" />
+        <mat-error *ngIf="!this.registerForm.get('name')?.hasError('required')">
           Kérem adja meg a felhasználónevét!
         </mat-error>
-        <mat-error *ngIf="this.registerForm.hasError('required')">
+        <mat-error *ngIf="this.registerForm.get('name')?.hasError('required')">
           A felhasználónév megadása <strong>kötelező</strong>
         </mat-error>
       </mat-form-field>
@@ -60,7 +54,6 @@
           [type]="hide ? 'password' : 'text'"
           matInput
           formControlName="password"
-          [errorStateMatcher]="matcher"
         />
         <button
           mat-icon-button
@@ -71,10 +64,14 @@
         >
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>
-        <mat-error *ngIf="!this.registerForm.hasError('minLength')">
+        <mat-error
+          *ngIf="!this.registerForm.get('password')?.hasError('minLength')"
+        >
           A jelszó minimum 8 karakteres
         </mat-error>
-        <mat-error *ngIf="this.registerForm.hasError('required')">
+        <mat-error
+          *ngIf="this.registerForm.get('password')?.hasError('required')"
+        >
           A jelszó megadása <strong>kötelező</strong>
         </mat-error>
       </mat-form-field>
@@ -85,7 +82,6 @@
           [type]="hide ? 'password' : 'text'"
           matInput
           formControlName="password2"
-          [errorStateMatcher]="matcher"
         />
       </mat-form-field>
       <mat-error *ngIf="this.registerForm.hasError('passwordMismatch')">
