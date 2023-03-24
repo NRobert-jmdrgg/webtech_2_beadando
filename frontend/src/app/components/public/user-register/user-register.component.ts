@@ -1,4 +1,3 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component } from '@angular/core';
 import {
   AbstractControl,
@@ -9,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FormErrorStateMatcher } from '../user-login/user-login.component';
+import { UserService } from '@services/user/user.service';
+import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 
 export const passwordMatchValidator: ValidatorFn = (
   control: AbstractControl
@@ -43,24 +43,12 @@ export class UserRegisterComponent {
 
   hide = false;
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private userService: UserService) {}
 
   onSubmit() {
-    const registerRequest = {
-      user: this.registerForm.value,
-    };
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+    this.userService.register(this.registerForm.value).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: (error) => console.error(error),
     });
-
-    this.http
-      .post<string>('http://localhost:3000/users/add/', registerRequest, {
-        headers,
-      })
-      .subscribe({
-        next: () => this.router.navigate(['/']),
-        error: (error) => console.error(error),
-      });
   }
 }
