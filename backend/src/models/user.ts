@@ -1,6 +1,6 @@
-import { Types, Schema, Document, Model, model } from 'mongoose';
+import { Types, Schema, Document, model, Model } from 'mongoose';
 
-export interface IUser extends Document {
+export interface IUser {
   name: string;
   password: string;
   email: string;
@@ -11,16 +11,6 @@ export interface IUser extends Document {
   firstName?: string;
   lastName?: string;
   refreshToken?: string;
-}
-
-export interface IUserModel extends Model<IUser> {
-  updateName(name: string): Promise<Document>;
-  updatePassword(password: string): Promise<Document>;
-  updateEmail(email: string): Promise<Document>;
-  updatePhone(phone: string): Promise<Document>;
-  findByEmail(email: string): Promise<IUser | null>;
-  findByUserName(userName: string): Promise<IUser | null>;
-  findByFullName(firstName: string, lastName: string): Promise<IUser[] | null>;
 }
 
 const userSchema = new Schema<IUser>(
@@ -35,46 +25,10 @@ const userSchema = new Schema<IUser>(
     refreshToken: String,
   },
   {
-    methods: {
-      updateName(name: string) {
-        this.name = name;
-        return this.save();
-      },
-
-      updatePassword(password: string) {
-        this.password = password;
-        return this.save();
-      },
-
-      updateEmail(email: string) {
-        this.email = email;
-        return this.save();
-      },
-
-      updatePhone(phone: string) {
-        this.phone = phone;
-        return this.save();
-      },
-    },
-
-    statics: {
-      findByEmail(email: string) {
-        return this.findOne({ email: email });
-      },
-
-      findByUserName(userName: string) {
-        return this.findOne({ name: userName });
-      },
-
-      findByFullName(firstName: string, lastName: string) {
-        return this.find({ fistName: firstName, lastName: lastName });
-      },
-    },
-
     collection: 'users',
     timestamps: true,
     strict: false,
   }
 );
 
-export default model<IUser, IUserModel>('User', userSchema);
+export default model<IUser>('User', userSchema);

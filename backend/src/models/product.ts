@@ -17,7 +17,7 @@ export interface IProductModel extends Model<IProduct> {
   findByCategory(category: string): Promise<IProduct[] | null>;
   findByBrand(brand: string): Promise<IProduct[] | null>;
   findByName(name: string): Promise<IProduct[] | null>;
-  findByBrandAndName(brand: string, name: string): Promise<IProduct | null>;
+  findByBrandAndName(brand: string, name: string): Promise<IProduct[] | null>;
   findPriceLessThan(price: number): Promise<IProduct[] | null>;
 }
 
