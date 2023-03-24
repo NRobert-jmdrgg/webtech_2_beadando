@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from 'src/app/models/product';
+import { Product } from '@models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '@services/product/product.service';
 
@@ -39,7 +39,6 @@ export class RegistryComponent implements OnInit {
   }
 
   loadProducts(event: any) {
-    console.log(JSON.stringify(event, null, 2));
     const { pageIndex, pageSize } = event;
     this.productService.getProducts(pageIndex * pageSize, pageSize).subscribe({
       next: (products) => (this.dataSource = products),
