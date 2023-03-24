@@ -12,7 +12,6 @@ import { MatSortModule } from '@angular/material/sort';
 import { UserLoginComponent } from './components/public/user-login/user-login.component';
 import { UserRegisterComponent } from './components/public/user-register/user-register.component';
 import { ProductAddComponent } from './components/private/product-add/product-add.component';
-import { LogsPanelComponent } from './components/private/logs-panel/logs-panel.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { WelcomeScreenComponent } from './components/public/welcome-screen/welcome-screen.component';
@@ -63,7 +62,6 @@ const routes: Routes = [
     UserLoginComponent,
     UserRegisterComponent,
     ProductAddComponent,
-    LogsPanelComponent,
     WelcomeScreenComponent,
     CenteredCardComponent,
     ProductComponent,
