@@ -13,6 +13,7 @@ export class ProductService {
     brand?: string | null;
     price?: number | null;
     category?: string | null;
+    registeredBy?: string;
   }) {
     return this.http.post<{ message: string }>(
       `http://localhost:3000/products/add`,
