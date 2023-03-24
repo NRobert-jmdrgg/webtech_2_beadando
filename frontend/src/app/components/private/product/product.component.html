@@ -8,52 +8,40 @@
     >
       <mat-form-field class="card-full-width">
         <mat-label>Név</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="name"
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+        <input type="text" matInput formControlName="name" />
+        <mat-error
+          *ngIf="this.productModifyForm.get('name')?.hasError('required')"
+        >
           A termék nevének megadása kötelező!
         </mat-error>
       </mat-form-field>
       <mat-form-field class="card-full-width">
         <mat-label>Márka</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="brand"
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+        <input type="text" matInput formControlName="brand" />
+        <mat-error
+          *ngIf="this.productModifyForm.get('brand')?.hasError('required')"
+        >
           A termék márkájának megadása kötelező!
         </mat-error>
       </mat-form-field>
       <mat-form-field class="card-full-width">
         <mat-label>Ár</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="price"
-          [errorStateMatcher]="matcher"
-        />
-        <mat-error *ngIf="this.productModifyForm.hasError('required')">
+        <input type="text" matInput formControlName="price" />
+        <mat-error
+          *ngIf="this.productModifyForm.get('price')?.hasError('required')"
+        >
           A termék árának megadása kötelező!
         </mat-error>
       </mat-form-field>
       <mat-form-field class="card-full-width">
         <mat-label>Kategória</mat-label>
-        <input
-          type="text"
-          matInput
-          formControlName="category"
-          [errorStateMatcher]="matcher"
-        />
+        <input type="text" matInput formControlName="category" />
+        <mat-error
+          *ngIf="this.productModifyForm.get('category')?.hasError('required')"
+        >
+          A termék kategóriájának megadása kötelező!
+        </mat-error>
       </mat-form-field>
-      <mat-error *ngIf="this.productModifyForm.hasError('required')">
-        A termék kategóriájának megadása kötelező!
-      </mat-error>
       <div style="display: flex">
         <button
           type="button"

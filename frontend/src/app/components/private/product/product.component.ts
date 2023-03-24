@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '@services/product/product.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormErrorStateMatcher } from '@components/public/user-login/user-login.component';
 import { Product } from '@models/product';
+import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 
 @Component({
   selector: 'app-product',
