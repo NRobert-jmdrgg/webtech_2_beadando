@@ -1,15 +1,63 @@
 <app-centered-card>
-  <mat-card-header>Termék módosítása</mat-card-header>
-  <mat-card-subtitle>Adja meg a termék adatait</mat-card-subtitle>
+  <mat-card-header>Termék hozzáadása</mat-card-header>
   <mat-card-content class="card-form-container">
-    <form class="card-form">
-      <mat-form-field class="card-full-width"></mat-form-field>
-      <mat-form-field class="card-full-width"></mat-form-field>
-      <mat-form-field class="card-full-width"></mat-form-field>
-      <mat-form-field class="card-full-width"></mat-form-field>
+    <form class="card-form" [formGroup]="productAddForm" (submit)="onSubmit()">
+      <mat-form-field class="card-full-width">
+        <mat-label>Név</mat-label>
+        <input type="text" matInput formControlName="name" />
+        <mat-error
+          *ngIf="this.productAddForm.get('name')?.hasError('required')"
+        >
+          A termék nevének megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Márka</mat-label>
+        <input type="text" matInput formControlName="brand" />
+        <mat-error
+          *ngIf="this.productAddForm.get('brand')?.hasError('required')"
+        >
+          A termék márkájának megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Ár</mat-label>
+        <input type="text" matInput formControlName="price" />
+        <mat-error
+          *ngIf="this.productAddForm.get('price')?.hasError('required')"
+        >
+          A termék árának megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="card-full-width">
+        <mat-label>Kategória</mat-label>
+        <input type="text" matInput formControlName="category" />
+        <mat-error
+          *ngIf="this.productAddForm.get('category')?.hasError('required')"
+        >
+          A termék kategóriájának megadása kötelező!
+        </mat-error>
+      </mat-form-field>
+      <div style="display: flex">
+        <button
+          type="submit"
+          mat-flat-button
+          color="primary"
+          style="margin: 0 0 20px 18px"
+          [disabled]="productAddForm.invalid"
+        >
+          Mentés
+        </button>
+        <button
+          type="reset"
+          mat-stroked-button
+          color="primary"
+          (click)="cancel()"
+          style="margin: 0 18px 20px auto"
+        >
+          Mégsem
+        </button>
+      </div>
     </form>
   </mat-card-content>
-  <mat-card-footer>
-    <button>Mentés</button>
-  </mat-card-footer>
 </app-centered-card>
