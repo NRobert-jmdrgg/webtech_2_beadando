@@ -47,7 +47,7 @@
           type="button"
           mat-flat-button
           color="primary"
-          [hidden]="edit"
+          [hidden]="edit || !isOwner()"
           (click)="toggleEditMode()"
           style="margin: 0 0 20px 18px"
         >
@@ -62,6 +62,16 @@
           [disabled]="productModifyForm.invalid"
         >
           Mentés
+        </button>
+        <button
+          type="button"
+          mat-flat-button
+          color="warn"
+          [hidden]="!isOwner()"
+          style="margin: 0 0 20px 18px"
+          (click)="onDelete()"
+        >
+          Törlés
         </button>
         <button
           *ngIf="edit"

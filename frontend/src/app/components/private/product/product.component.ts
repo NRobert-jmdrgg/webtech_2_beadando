@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Product } from '@models/product';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '@services/auth/auth.service';
 
 @Component({
   selector: 'app-product',
@@ -13,17 +14,19 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class ProductComponent implements OnInit {
   productId!: string;
+  product!: Product;
   edit: boolean;
   action: string;
-  initialValues!: Product;
   productModifyForm!: FormGroup;
   matcher = new FormErrorStateMatcher();
+  currentUserId!: string | undefined | null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {
     this.edit = false;
     this.action = 'Szerkeszt';
@@ -38,8 +41,22 @@ export class ProductComponent implements OnInit {
     this.productModifyForm.disable();
   }
 
+  isOwner() {
+    return this.product && this.product.registeredBy === this.currentUserId;
+  }
+
+  onDelete() {
+    this.productService.deleteProduct(this.productId).subscribe({
+      next: () => {
+        this.snackBar.open('Termék törölve', 'ok', { duration: 3000 });
+        this.router.navigate(['/registry']);
+      },
+      error: (error) => console.error(error),
+    });
+  }
+
   cancel() {
-    this.productModifyForm.reset(this.initialValues);
+    this.productModifyForm.reset(this.product);
     this.toggleEditMode();
   }
 
@@ -73,9 +90,14 @@ export class ProductComponent implements OnInit {
     });
     this.productService.getProduct(this.productId).subscribe({
       next: (data) => {
-        this.initialValues = data;
+        this.product = data;
         this.productModifyForm.patchValue(data);
       },
+      error: (error) => console.error(error),
+    });
+
+    this.authService.currentUser$.subscribe({
+      next: (user) => (this.currentUserId = user?.id),
       error: (error) => console.error(error),
     });
   }
