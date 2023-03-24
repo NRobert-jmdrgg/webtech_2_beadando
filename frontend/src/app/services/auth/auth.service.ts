@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { User } from '@models/user';
+import { catchError } from 'rxjs';
 
 export interface LoginRequest {
   email: string;
@@ -11,42 +12,52 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   accessToken: string;
-  exiresIn: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  loggedInUser: User;
-  expiresIn!: Date;
+  private token: string | null = localStorage.getItem('accessToken');
+  private currentUserSubject = new BehaviorSubject<User | null>(
+    this.getLoggedInUser()
+  );
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private jwtService: JwtHelperService) {
-    this.loggedInUser = this.getLoggedInUser();
-  }
+  constructor(private http: HttpClient, private jwtService: JwtHelperService) {}
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.http
-      .post<LoginResponse>('http://localhost:3000/auth/signin', loginRequest)
+      .post<LoginResponse>(`http://localhost:3000/auth/signin`, loginRequest)
       .pipe(
         tap((res: LoginResponse) => {
           localStorage.setItem('accessToken', res.accessToken);
-          this.expiresIn = new Date(res.exiresIn);
+          this.token = res.accessToken;
+          this.currentUserSubject.next(this.getLoggedInUser());
+        }),
+        catchError((err) => {
+          console.error(err);
+          throw err;
         })
       );
   }
 
   logout() {
     localStorage.removeItem('accessToken');
+    this.token = null;
+    this.currentUserSubject.next(null);
   }
 
-  isAuthenticated() {
-    return this.expiresIn && this.expiresIn.getTime() > new Date().getTime();
+  getToken() {
+    return this.token;
+  }
+
+  isLoggedIn() {
+    return this.token && !this.jwtService.isTokenExpired(this.token);
   }
 
   getLoggedInUser() {
-    const token = localStorage.getItem('accessToken');
-    const decodedToken = this.jwtService.decodeToken(token!);
+    const decodedToken = this.jwtService.decodeToken(this.token!) as User;
     return decodedToken;
   }
 }
