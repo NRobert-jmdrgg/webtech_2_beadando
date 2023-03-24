@@ -17,7 +17,9 @@ interface RegisterData {
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  checkDuplicateUser(data: RegisterData) {}
+  getUserById(id: string) {
+    return this.http.get<{ name: string }>(`http://localhost:3000/users/${id}`);
+  }
 
   register(data: RegisterData) {
     const registerRequest = {
