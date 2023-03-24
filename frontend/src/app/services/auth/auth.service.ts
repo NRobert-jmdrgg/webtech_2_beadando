@@ -18,11 +18,11 @@ export interface LoginResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  user: User;
+  loggedInUser: User;
   expiresIn!: Date;
 
   constructor(private http: HttpClient, private jwtService: JwtHelperService) {
-    this.user = this.getLoggedInUser();
+    this.loggedInUser = this.getLoggedInUser();
   }
 
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
