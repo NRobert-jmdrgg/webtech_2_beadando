@@ -3,7 +3,6 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRouter from './routes/user.route';
 import productRouter from './routes/products.route';
-import logRouter from './routes/logs.route';
 import authRouter from './routes/auth.route';
 import mongoose from 'mongoose';
 
@@ -23,7 +22,6 @@ mongoose
 
     app.use('/users', userRouter);
     app.use('/products', productRouter);
-    app.use('/logs', logRouter);
     app.use('/auth', authRouter);
 
     app.listen(port, () => {

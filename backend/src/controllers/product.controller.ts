@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 import Product, { IProduct } from '../models/product';
-import User from '../models/user';
 
 interface ProductRequest extends Request {
   product?: IProduct;
@@ -79,6 +78,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
 export const addProduct = async (req: ProductRequest, res: Response) => {
   try {
     const product = new Product({ registeredBy: new Types.ObjectId(req.body.registeredBy), ...req.body.product });
+
     await product.save();
     res.status(201).send({ message: 'Product created' });
   } catch (error) {
