@@ -22,10 +22,10 @@ export class TopBarComponent {
   }
 
   goToUserPage() {
-    this.router.navigate([`/user/${this.authService.user.id}`]);
+    this.router.navigate([`/user/${this.authService.loggedInUser.id}`]);
   }
 
-  atThisPage(route: string) {
+  atPage(route: string) {
     return this.router.url === route;
   }
 }
