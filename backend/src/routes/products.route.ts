@@ -3,21 +3,20 @@ import express from 'express';
 import {
   addProduct,
   deleteProduct,
-  getAllProducts,
   getProductsById,
   getProductsCount,
   getProductsFromLower,
   updateProduct,
 } from '../controllers/product.controller';
+import { verifyToken } from '../middleware/verifyJWT';
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
-router.get('/count', getProductsCount);
-router.get('/:id', getProductsById);
-router.get('/lower/:lower/:count', getProductsFromLower);
-router.put('/:id', updateProduct);
-router.delete('/:id', deleteProduct);
-router.post('/add', addProduct);
+router.get('/count', [verifyToken], getProductsCount);
+router.get('/:id', [verifyToken], getProductsById);
+router.get('/lower/:lower/:count', [verifyToken], getProductsFromLower);
+router.put('/:id', [verifyToken], updateProduct);
+router.delete('/:id', [verifyToken], deleteProduct);
+router.post('/add', [verifyToken], addProduct);
 
 export default router;
