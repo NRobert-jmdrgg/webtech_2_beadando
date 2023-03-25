@@ -21,12 +21,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CenteredCardComponent } from './components/centered-card/centered-card.component';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProductComponent } from './components/private/product/product.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { UserPageComponent } from './components/private/user-page/user-page.component';
 import { authGuard } from './guards/auth/auth.guard';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthInterceptor } from '@utils/httpinterceptor';
 
 export function TokenGetter() {
   return localStorage.getItem('accessToken');
@@ -38,19 +39,23 @@ const routes: Routes = [
   { path: 'register', component: UserRegisterComponent },
   {
     path: 'registry',
-    component: RegistryComponent /*canActivate: [authGuard]*/,
+    component: RegistryComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'product/:id',
-    component: ProductComponent /*canActivate: [authGuard]*/,
+    component: ProductComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'user/:id',
-    component: UserPageComponent /*canActivate: [authGuard]*/,
+    component: UserPageComponent,
+    canActivate: [authGuard],
   },
   {
     path: 'product-add',
-    component: ProductAddComponent /*canActivate: [authGuard]*/,
+    component: ProductAddComponent,
+    canActivate: [authGuard],
   },
 ];
 
@@ -93,7 +98,9 @@ const routes: Routes = [
     }),
   ],
   exports: [RouterModule],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
