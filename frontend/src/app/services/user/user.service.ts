@@ -17,7 +17,7 @@ interface RegisterData {
 export class UserService {
   constructor(private http: HttpClient) {}
 
-  getUserById(id: string) {
+  getUserNameById(id: string) {
     return this.http.get<{ name: string }>(`http://localhost:3000/users/${id}`);
   }
 
