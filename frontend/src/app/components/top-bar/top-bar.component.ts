@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs';
 
 @Component({
@@ -9,7 +10,8 @@ import { take } from 'rxjs';
   templateUrl: './top-bar.component.html',
   styleUrls: ['./top-bar.component.css'],
 })
-export class TopBarComponent implements OnInit {
+export class TopBarComponent implements OnDestroy {
+  currentUserSubcription!: Subscription;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -23,7 +25,7 @@ export class TopBarComponent implements OnInit {
   }
 
   goToUserPage() {
-    this.authService.currentUser$.subscribe({
+    this.currentUserSubcription = this.authService.currentUser$.subscribe({
       next: (user) => this.router.navigate([`/user/${user?.id}`]),
       error: (error) => console.error(error),
     });
@@ -37,5 +39,7 @@ export class TopBarComponent implements OnInit {
     return this.authService.isLoggedIn();
   }
 
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.currentUserSubcription?.unsubscribe();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -11,6 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UserService } from '@services/user/user.service';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
+import { Subscription } from 'rxjs';
 
 export const passwordMatchValidator: ValidatorFn = (
   control: AbstractControl
@@ -26,7 +27,8 @@ export const passwordMatchValidator: ValidatorFn = (
   templateUrl: './user-register.component.html',
   styleUrls: [],
 })
-export class UserRegisterComponent {
+export class UserRegisterComponent implements OnDestroy {
+  userRegisterSubscription!: Subscription;
   registerForm: FormGroup = new FormGroup(
     {
       email: new FormControl(null, [Validators.required, Validators.email]),
@@ -51,18 +53,28 @@ export class UserRegisterComponent {
   ) {}
 
   onSubmit() {
-    this.userService.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.snackBar.open('Sikeres regisztráció', 'ok', { duration: 3000 });
-        this.router.navigate(['/']);
-      },
-      error: (error) => {
-        const code = error.status;
+    this.userRegisterSubscription = this.userService
+      .register(this.registerForm.value)
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Sikeres regisztráció', 'ok', { duration: 3000 });
+          this.router.navigate(['/']);
+        },
+        error: (error) => {
+          const code = error.status;
 
-        if (code !== 500) {
-          this.snackBar.open(error.error.message, 'ok', { duration: 3000 });
-        }
-      },
-    });
+          if (code !== 500) {
+            if (error.error?.message) {
+              this.snackBar.open(error.error.message, 'ok', { duration: 3000 });
+            } else {
+              console.error(error);
+            }
+          }
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.userRegisterSubscription.unsubscribe();
   }
 }

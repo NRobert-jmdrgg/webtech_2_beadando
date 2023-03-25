@@ -1,17 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from '@services/auth/auth.service';
 import { ProductService } from '@services/product/product.service';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-add',
   templateUrl: './product-add.component.html',
   styleUrls: ['./product-add.component.css'],
 })
-export class ProductAddComponent {
+export class ProductAddComponent implements OnDestroy {
   productAddForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     brand: new FormControl(null, [Validators.required]),
@@ -19,6 +20,8 @@ export class ProductAddComponent {
     category: new FormControl(null, [Validators.required]),
   });
   matcher = new FormErrorStateMatcher();
+  currentUserSubscription!: Subscription;
+  addProductSubscription!: Subscription;
 
   constructor(
     private router: Router,
@@ -28,10 +31,10 @@ export class ProductAddComponent {
   ) {}
 
   onSubmit() {
-    this.authService.currentUser$.subscribe({
+    this.currentUserSubscription = this.authService.currentUser$.subscribe({
       next: (user) => {
         console.log(user);
-        this.productService
+        this.addProductSubscription = this.productService
           .addProduct({
             ...this.productAddForm.value,
             registeredBy: user?.id,
@@ -51,5 +54,11 @@ export class ProductAddComponent {
 
   cancel() {
     this.router.navigate(['/registry']);
+  }
+
+  ngOnDestroy(): void {
+    this.addProductSubscription?.unsubscribe();
+
+    this.currentUserSubscription?.unsubscribe();
   }
 }

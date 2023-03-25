@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '@services/product/product.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,13 +6,14 @@ import { Product } from '@models/product';
 import { FormErrorStateMatcher } from '@utils/formatStateMatcher';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '@services/auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.css'],
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnDestroy {
   productId!: string;
   product!: Product;
   edit: boolean;
@@ -20,6 +21,10 @@ export class ProductComponent implements OnInit {
   productModifyForm!: FormGroup;
   matcher = new FormErrorStateMatcher();
   currentUserId!: string | undefined | null;
+  paramsSubscription!: Subscription;
+  productSubscription!: Subscription;
+  currentUserSubscription!: Subscription;
+  updateProductSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,7 +78,7 @@ export class ProductComponent implements OnInit {
   }
 
   onSubmit() {
-    this.productService
+    this.updateProductSubscription = this.productService
       .updateProduct({ _id: this.productId, ...this.productModifyForm.value })
       .subscribe({
         next: () => {
@@ -85,20 +90,30 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
+    this.paramsSubscription = this.route.params.subscribe((params) => {
       this.productId = params['id'];
     });
-    this.productService.getProduct(this.productId).subscribe({
-      next: (data) => {
-        this.product = data;
-        this.productModifyForm.patchValue(data);
-      },
-      error: (error) => console.error(error),
-    });
+    this.productSubscription = this.productService
+      .getProduct(this.productId)
+      .subscribe({
+        next: (data) => {
+          this.product = data;
+          this.productModifyForm.patchValue(data);
+        },
+        error: (error) => console.error(error),
+      });
 
-    this.authService.currentUser$.subscribe({
+    this.currentUserSubscription = this.authService.currentUser$.subscribe({
       next: (user) => (this.currentUserId = user?.id),
       error: (error) => console.error(error),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.paramsSubscription.unsubscribe();
+    this.productSubscription.unsubscribe();
+    this.currentUserSubscription.unsubscribe();
+
+    this.updateProductSubscription?.unsubscribe();
   }
 }

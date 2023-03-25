@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Product } from '@models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '@services/product/product.service';
+import { Subscription } from 'rxjs';
 
 /**
  * @title Binding event handlers and properties to the table rows.
@@ -11,14 +12,16 @@ import { ProductService } from '@services/product/product.service';
   styleUrls: ['registry.component.css'],
   templateUrl: 'registry.component.html',
 })
-export class RegistryComponent implements OnInit {
+export class RegistryComponent implements OnInit, OnDestroy {
   productsLength!: number;
   currentPage: number;
   pageSize: number;
-
   displayedColumns = ['name', 'brand', 'price', 'registeredBy', 'category'];
-
   dataSource: Product[];
+  getProductsSubscription!: Subscription;
+  getProductsSubscription2!: Subscription;
+  queryParamSubscription!: Subscription;
+  getProductsCountSubscription!: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,28 +43,45 @@ export class RegistryComponent implements OnInit {
 
   loadProducts(event: any) {
     const { pageIndex, pageSize } = event;
-    this.productService.getProducts(pageIndex * pageSize, pageSize).subscribe({
-      next: (products) => (this.dataSource = products),
-      error: (error) => console.error(error),
-    });
+    this.getProductsSubscription = this.productService
+      .getProducts(pageIndex * pageSize, pageSize)
+      .subscribe({
+        next: (products) => (this.dataSource = products),
+        error: (error) => console.error(error),
+      });
 
     this.setUrlQueryParams(pageIndex, pageSize);
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
+    this.queryParamSubscription = this.route.queryParams.subscribe((params) => {
       this.currentPage = params['page'] ?? 0;
       this.pageSize = params['size'] ?? 10;
     });
 
-    this.productService.getProducts(0, this.pageSize).subscribe({
-      next: (products) => (this.dataSource = products),
-      error: (error) => console.error(error),
-    });
+    this.getProductsSubscription2 = this.productService
+      .getProducts(0, this.pageSize)
+      .subscribe({
+        next: (products) => (this.dataSource = products),
+        error: (error) => console.error(error),
+      });
 
-    this.productService.getProductsCount().subscribe({
-      next: (products) => (this.productsLength = products.length),
-      error: (error) => console.error(error),
-    });
+    this.getProductsCountSubscription = this.productService
+      .getProductsCount()
+      .subscribe({
+        next: (products) => (this.productsLength = products.length),
+        error: (error) => console.error(error),
+      });
+  }
+
+  ngOnDestroy(): void {
+    console.log('registry destroyed');
+    if (this.getProductsSubscription) {
+      this.getProductsSubscription.unsubscribe();
+    }
+
+    this.getProductsSubscription2.unsubscribe();
+    this.queryParamSubscription.unsubscribe();
+    this.getProductsCountSubscription.unsubscribe();
   }
 }
