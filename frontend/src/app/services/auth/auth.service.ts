@@ -31,7 +31,7 @@ export class AuthService {
       .post<LoginResponse>(`http://localhost:3000/auth/signin`, loginRequest)
       .pipe(
         tap((res: LoginResponse) => {
-          localStorage.setItem('accessToken', res.accessToken);
+          this.setAccessToken(res.accessToken);
           this.token = res.accessToken;
           this.currentUserSubject.next(this.getLoggedInUser());
         }),
@@ -40,6 +40,10 @@ export class AuthService {
           throw err;
         })
       );
+  }
+
+  private setAccessToken(token: string) {
+    localStorage.setItem('accessToken', token);
   }
 
   logout() {
@@ -53,10 +57,10 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this.token && !this.jwtService.isTokenExpired(this.token);
+    return Boolean(this.token);
   }
 
-  getLoggedInUser() {
+  private getLoggedInUser() {
     const decodedToken = this.jwtService.decodeToken(this.token!) as User;
     return decodedToken;
   }
