@@ -16,8 +16,6 @@ export const signin = async (req: Request, res: Response) => {
 
   const foundUser = await User.findOne({ email: email });
 
-  console.log('sign in was called');
-
   if (!foundUser) {
     return res.status(401).send({ message: 'Nincs ilyen email cím' }); //Unauthorized
   }
