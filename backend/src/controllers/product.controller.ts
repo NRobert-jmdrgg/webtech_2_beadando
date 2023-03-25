@@ -1,19 +1,11 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 import Product, { IProduct } from '../models/product';
+import User from '../models/user';
 
 interface ProductRequest extends Request {
   product?: IProduct;
 }
-
-export const getAllProducts = async (req: Request, res: Response) => {
-  try {
-    res.status(200).send(await Product.find({}));
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'An error occurred' });
-  }
-};
 
 export const getProductsCount = async (req: Request, res: Response) => {
   try {
