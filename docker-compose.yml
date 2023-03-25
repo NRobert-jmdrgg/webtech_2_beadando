@@ -5,7 +5,7 @@ services:
     working_dir: /app/backend
     volumes:
       - ./backend:/app/backend
-    command: npm start
+    command: bash -c "npm install && npm start"
     ports:
       - '3000:3000'
     environment:
@@ -20,7 +20,7 @@ services:
     working_dir: /app/frontend
     volumes:
       - ./frontend:/app/frontend
-    command: npm start
+    command: bash -c "npm install && npm start"
     ports:
       - '4200:4200'
     depends_on:
