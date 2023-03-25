@@ -11,7 +11,15 @@ const port = process.env.PORT;
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:8081' }));
+app.use(
+  cors({
+    origin: 'http://localhost:4200', // the frontend domain
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // the HTTP methods to allow
+    allowedHeaders: ['Content-Type', 'Authorization'], // the headers to allow
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
