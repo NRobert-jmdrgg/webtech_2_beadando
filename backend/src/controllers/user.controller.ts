@@ -16,15 +16,6 @@ const checkIfExsits = async (prop: { [x: string]: string }) => {
   }
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
-  try {
-    res.status(200).send(await User.find({}));
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'An error occurred' });
-  }
-};
-
 export const addUser = async (req: UserRequest, res: Response) => {
   try {
     const { email, password, name, phone, firstName, lastName } = req.body.user;
@@ -66,33 +57,6 @@ export const getUserNameById = async (req: Request, res: Response) => {
       return res.status(404).send({ message: 'User not found' });
     }
     return res.status(200).send({ name: user.name });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'An error occurred' });
-  }
-};
-
-export const updateUser = async (req: UserRequest, res: Response) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findByIdAndUpdate(id, req.body.user);
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
-    }
-    await user.save();
-    res.status(200).send({ message: 'User updated' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({ message: 'An error occurred' });
-  }
-};
-
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    await User.findByIdAndDelete(id);
-
-    res.status(200).send({ message: 'User deleted' });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: 'An error occurred' });
