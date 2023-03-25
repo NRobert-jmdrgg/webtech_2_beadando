@@ -39,11 +39,8 @@ export const signin = async (req: Request, res: Response) => {
 
   // create JWTs
   const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET!, {
-    expiresIn: '1h',
+    expiresIn: '7d',
   });
-
-  foundUser.isLoggedIn = true;
-  await foundUser.save();
 
   res.json({ accessToken });
 };
