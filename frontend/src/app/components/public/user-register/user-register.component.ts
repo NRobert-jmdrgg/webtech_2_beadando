@@ -44,7 +44,7 @@ export class UserRegisterComponent implements OnDestroy {
 
   matcher = new FormErrorStateMatcher();
 
-  hide = false;
+  hide = true;
 
   constructor(
     private router: Router,
@@ -75,6 +75,6 @@ export class UserRegisterComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.userRegisterSubscription.unsubscribe();
+    this.userRegisterSubscription?.unsubscribe();
   }
 }
