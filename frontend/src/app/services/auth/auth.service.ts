@@ -57,7 +57,7 @@ export class AuthService {
   }
 
   isLoggedIn() {
-    return this.token && this.jwtService.isTokenExpired(this.token);
+    return this.token && !this.jwtService.isTokenExpired(this.token);
   }
 
   private getLoggedInUser() {
